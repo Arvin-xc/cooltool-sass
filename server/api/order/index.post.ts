@@ -1,6 +1,5 @@
 import { serverSupabaseClient } from "#supabase/server";
-import { generateInviteCode } from "../../services/user";
-import { getServerSupabaseUser } from "~/server/utils";
+import { generateInviteCode, getServerSupabaseUser } from "~/server/utils";
 import { Database } from "~/@types/supabase";
 
 export default eventHandler(async (event) => {
