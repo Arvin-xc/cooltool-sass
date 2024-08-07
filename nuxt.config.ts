@@ -15,6 +15,14 @@ export default defineNuxtConfig({
   supabase: {
     redirect: false,
   },
+  vite: {
+    resolve: {
+      alias: {
+        ".prisma/client/index-browser":
+          "./node_modules/@prisma/client/index-browser.js",
+      },
+    },
+  },
   compatibilityDate: "2024-04-03",
   devtools: { enabled: true },
 });
