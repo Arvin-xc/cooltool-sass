@@ -11,25 +11,32 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+const supabase = useSupabaseClient();
+
+const { data: user } = useAsyncData("user", () => supabase.auth.getUser(), {
+  transform: (data) => data.data.user,
+});
 </script>
 
 <template>
-  <DropdownMenu>
+  <DropdownMenu v-if="user">
     <DropdownMenuTrigger as-child>
       <Button variant="ghost" class="relative rounded-full px-0 gap-2 flex-col">
         <Avatar class="h-8 w-8">
-          <AvatarImage src="/avatars/01.png" alt="@shadcn" />
-          <AvatarFallback>SC</AvatarFallback>
+          <AvatarImage src="" alt="@shadcn" />
+          <AvatarFallback>{{ user.email?.slice(0, 1) }}</AvatarFallback>
         </Avatar>
       </Button>
-      <p class="text-xs">9090@qq.com</p>
+      <p class="text-xs">{{ user.email }}</p>
     </DropdownMenuTrigger>
     <DropdownMenuContent class="w-56" align="start">
       <DropdownMenuLabel class="font-normal flex">
         <div class="flex flex-col space-y-1">
-          <p class="text-sm font-medium leading-none">艾纹</p>
+          <p class="text-sm font-medium leading-none">
+            {{ user.user_metadata.name ?? user.id }}
+          </p>
           <p class="text-xs leading-none text-muted-foreground">
-            m@example.com
+            {{ user.email }}
           </p>
         </div>
       </DropdownMenuLabel>
@@ -56,4 +63,5 @@ import {
       </DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>
+  <NuxtLink as="button" href="/login" v-else>登录</NuxtLink>
 </template>

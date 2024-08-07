@@ -1,0 +1,169 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table Invitation {
+  id Int [pk, increment]
+  inviterId String [not null]
+  inviteeId String [unique, not null]
+  createdAt DateTime [default: `now()`, not null]
+  subscription Subscription [not null]
+  inviter User [not null]
+  invitee User [not null]
+}
+
+Table User {
+  id String [pk]
+  supabaseId String [unique, not null]
+  username String
+  openid String [unique]
+  password String [not null]
+  email String [unique]
+  emailVerified DateTime
+  phone String [unique]
+  avatar String
+  inviteCode String [unique, not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  coins Int [not null, default: 0]
+  level Int [not null, default: 1]
+  country String
+  province String
+  sex Int
+  language String
+  unionid String
+  city String
+  privilege String[] [not null]
+  subscription Subscription [not null]
+  sessions Session [not null]
+  role Role [not null]
+  CoinTransaction CoinTransaction [not null]
+  Order Order [not null]
+  invitationsSent Invitation [not null]
+  invitationsReceived Invitation [not null]
+}
+
+Table verificationtokens {
+  identifier String [unique, not null]
+  token String [not null]
+  expires DateTime [not null]
+
+  indexes {
+    (identifier, token) [unique]
+  }
+}
+
+Table Session {
+  id Int [pk, increment]
+  userId String [not null]
+  user User [not null]
+  token String [unique, not null]
+  createdAt DateTime [default: `now()`, not null]
+  expiresAt DateTime [not null]
+}
+
+Table Order {
+  id String [pk]
+  userId String [not null]
+  amount Float [not null]
+  payerOpenid String
+  currency String
+  status OrderStatus [not null]
+  subscriptionType SubscriptionType [not null]
+  paymentId String
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  user User [not null]
+  subscription Subscription
+  subscriptionId Int
+}
+
+Table Subscription {
+  id Int [pk, increment]
+  type SubscriptionType [not null]
+  startDate DateTime [default: `now()`, not null]
+  endDate DateTime [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  userId String [unique, not null]
+  user User [not null]
+  orders Order [not null]
+  invitationId Int
+  invitation Invitation
+}
+
+Table MembershipLevel {
+  id Int [pk, increment]
+  level Int [unique, not null, default: 0]
+  rechargeAmount Int [not null]
+  createdAt DateTime [default: `now()`, not null]
+}
+
+Table SubscriptionPrice {
+  id Int [pk, increment]
+  title String [not null]
+  subtitle String [not null]
+  price Int [not null]
+  type SubscriptionType [unique, not null]
+  tag String
+}
+
+Table CoinTransaction {
+  id Int [pk, increment]
+  userId String [not null]
+  amount Int [not null]
+  description String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  user User [not null]
+}
+
+Table WechatLoginSession {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  userId String
+  status WechatLoginStatus [not null]
+}
+
+Enum OrderStatus {
+  CREATED
+  PAID
+  CANCELED
+}
+
+Enum SubscriptionType {
+  YEARLY
+  MONTHLY
+  QUARTERLY
+  SEMIANNUALLY
+  INVITE
+}
+
+Enum Role {
+  ADMIN
+  USER
+}
+
+Enum WechatLoginStatus {
+  CREATED
+  SUCCESS
+  FAIL
+  USED
+}
+
+Ref: Invitation.inviterId > User.id
+
+Ref: Invitation.inviteeId > User.id
+
+Ref: Session.userId > User.id
+
+Ref: Order.userId > User.id
+
+Ref: Order.subscriptionId > Subscription.id
+
+Ref: Subscription.userId > User.id
+
+Ref: Subscription.invitationId > Invitation.id
+
+Ref: CoinTransaction.userId > User.id

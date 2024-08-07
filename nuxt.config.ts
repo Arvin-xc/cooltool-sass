@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ["@nuxtjs/tailwindcss", "shadcn-nuxt"],
+  modules: ["@nuxtjs/tailwindcss", "shadcn-nuxt", "@nuxtjs/supabase"],
   shadcn: {
     /**
      * Prefix for all the imported component
@@ -11,6 +11,9 @@ export default defineNuxtConfig({
      * @default "./components/ui"
      */
     componentDir: "./components/ui",
+  },
+  supabase: {
+    redirect: false,
   },
   compatibilityDate: "2024-04-03",
   devtools: { enabled: true },
