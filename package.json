@@ -7,7 +7,9 @@
     "dev": "nuxt dev --host",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare && prisma generate"
+    "postinstall": "nuxt prepare && prisma generate",
+    "seed": "node --loader ts-node/esm ./prisma/seed.ts",
+    "generate:types": "supabase gen types --lang=typescript --project-id qrfddtqqlixucpappihy --schema public > ./@types/supabase.ts"
   },
   "dependencies": {
     "@nuxtjs/supabase": "^1.3.5",
@@ -30,9 +32,11 @@
   "packageManager": "pnpm@9.0.5",
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.12.1",
-    "@prisma/client": "^5.18.0",
+    "@types/seedrandom": "^3.0.8",
     "prisma": "^5.18.0",
     "prisma-dbml-generator": "^0.12.0",
+    "supabase": "^1.187.10",
+    "ts-node": "^10.9.2",
     "typescript": "^5.5.4"
   }
 }

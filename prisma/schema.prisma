@@ -24,8 +24,7 @@ model Invitation {
 }
 
 model User {
-  id                  String            @id @default(cuid())
-  supabaseId          String            @unique
+  id                  String            @id
   username            String?
   openid              String?           @unique
   password            String
@@ -33,7 +32,7 @@ model User {
   emailVerified       DateTime?
   phone               String?           @unique
   avatar              String?
-  inviteCode          String            @unique @default(cuid())
+  inviteCode          String            @unique
   createdAt           DateTime          @default(now())
   updatedAt           DateTime          @updatedAt
   coins               Int               @default(0)
@@ -73,7 +72,7 @@ model Session {
 }
 
 model Order {
-  id               String           @id @default(cuid())
+  id               String           @id
   userId           String
   amount           Float
   payerOpenid      String?
