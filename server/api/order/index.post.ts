@@ -40,6 +40,7 @@ export default eventHandler(async (event) => {
     console.info("Order created successfully for user %s", user.id);
     return order;
   } catch (error) {
+    console.log(error);
     throw createError({
       statusCode: 500,
       message: "服务异常，请稍后再试！",
