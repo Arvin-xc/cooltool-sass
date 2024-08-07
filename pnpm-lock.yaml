@@ -11,6 +11,9 @@ importers:
       '@nuxtjs/supabase':
         specifier: ^1.3.5
         version: 1.3.5
+      '@prisma/client':
+        specifier: 5.18.0
+        version: 5.18.0(prisma@5.18.0)
       '@supabase/supabase-js':
         specifier: ^2.45.1
         version: 2.45.1
@@ -60,9 +63,6 @@ importers:
       '@nuxtjs/tailwindcss':
         specifier: ^6.12.1
         version: 6.12.1(magicast@0.3.4)(rollup@4.20.0)(ts-node@10.9.2(@types/node@22.1.0)(typescript@5.5.4))
-      '@prisma/client':
-        specifier: ^5.18.0
-        version: 5.18.0(prisma@5.18.0)
       '@types/seedrandom':
         specifier: ^3.0.8
         version: 3.0.8
