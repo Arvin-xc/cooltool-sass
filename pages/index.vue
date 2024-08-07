@@ -4,13 +4,11 @@
 </template>
 
 <script setup lang="ts">
-import { SubscriptionType } from "@prisma/client";
-
 const { execute: createOrder, data: order } = useFetch("/api/order", {
   method: "POST",
   immediate: false,
   body: {
-    subscriptionType: SubscriptionType.QUARTERLY,
+    subscriptionType: "QUARTERLY",
   },
 });
 </script>
