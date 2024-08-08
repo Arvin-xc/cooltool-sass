@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input'
     <Input
       type="search"
       placeholder="Search..."
-      class="md:w-[100px] lg:w-[300px]"
+      class="md:w-[100px] lg:w-[300px] w-[200px]"
     />
   </div>
 </template>

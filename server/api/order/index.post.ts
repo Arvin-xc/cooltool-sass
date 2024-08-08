@@ -1,5 +1,9 @@
 import { serverSupabaseClient } from "#supabase/server";
-import { generateInviteCode, getServerSupabaseUser } from "~/server/utils";
+import {
+  generateInviteCode,
+  getServerSupabaseUser,
+  last,
+} from "~/server/utils";
 import { Database } from "~/@types/supabase";
 
 export default eventHandler(async (event) => {
@@ -45,10 +49,11 @@ export default eventHandler(async (event) => {
   if (users && subscriptions) {
     const [user] = users;
     const [subscription] = subscriptions;
+    const userIdTrailing = last(user.id.split("-"));
     const { data: orders, error: orderError } = await supabaseClient
       .from("Order")
       .insert({
-        id: `${user.id}-${new Date().getTime()}`,
+        id: `${userIdTrailing}-${new Date().getTime()}`,
         subscriptionType,
         status: "CREATED",
         updatedAt: new Date().toDateString(),

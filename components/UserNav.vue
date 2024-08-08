@@ -64,4 +64,7 @@ const { data: user } = useAsyncData("user", () => supabase.auth.getUser(), {
     </DropdownMenuContent>
   </DropdownMenu>
   <NuxtLink as="button" href="/login" v-else>登录</NuxtLink>
+  <PricingDialog>
+    <Button>开通会员</Button>
+  </PricingDialog>
 </template>
