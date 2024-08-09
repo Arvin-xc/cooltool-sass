@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "nuxt build",
+    "build:sw": "SW=true nuxt build",
     "dev": "nuxt dev --host",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
@@ -21,6 +22,7 @@
     "@types/crypto-js": "^4.2.2",
     "@vee-validate/nuxt": "^4.13.2",
     "@vee-validate/zod": "^4.13.2",
+    "@vite-pwa/nuxt": "^0.9.1",
     "@vueuse/core": "^10.11.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
@@ -35,8 +37,7 @@
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
     "vee-validate": "^4.13.2",
-    "vue": "latest",
-    "vue-cropper": "^0.6.5",
+    "vue": "^3.4.37",
     "wechatpay-node-v3": "^2.2.0",
     "zod": "^3.23.8"
   },
@@ -50,6 +51,9 @@
     "prisma-dbml-generator": "^0.12.0",
     "supabase": "^1.187.10",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "workbox-core": "^7.1.0",
+    "workbox-precaching": "^7.1.0",
+    "workbox-routing": "^7.1.0"
   }
 }

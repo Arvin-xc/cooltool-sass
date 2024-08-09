@@ -18,13 +18,7 @@ const onBack = () => {
     >
       <div class="absolute inset-0 bg-zinc-900" />
       <div class="flex items-center gap-2 relative z-20">
-        <Button
-          href="/examples/authentication"
-          @click="onBack"
-          class="w-14"
-          size="sm"
-          variant="ghost"
-        >
+        <Button @click="onBack" class="w-14" size="sm" variant="ghost">
           <Icon icon="mdi:arrow-back" height="auto" />
         </Button>
         <div class="flex items-center text-lg font-medium">
@@ -55,14 +49,14 @@ const onBack = () => {
         <p class="text-center text-sm text-muted-foreground">
           创建账号即视为您已阅读并同意
           <a
-            href="/terms"
+            href="/"
             class="underline underline-offset-4 hover:text-primary"
           >
             服务协议
           </a>
           和
           <a
-            href="/privacy"
+            href="/"
             class="underline underline-offset-4 hover:text-primary"
           >
             隐私政策
