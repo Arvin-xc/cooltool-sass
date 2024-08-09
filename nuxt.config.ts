@@ -1,6 +1,17 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ["@nuxtjs/tailwindcss", "shadcn-nuxt", "@nuxtjs/supabase"],
+  runtimeConfig: {
+    public: {
+      SUPABASE_URL: process.env.SUPABASE_URL,
+    },
+  },
+  modules: [
+    "@nuxtjs/tailwindcss",
+    "shadcn-nuxt",
+    "@nuxtjs/supabase",
+    "@vee-validate/nuxt",
+  ],
+
   shadcn: {
     /**
      * Prefix for all the imported component
@@ -16,6 +27,9 @@ export default defineNuxtConfig({
     redirect: false,
   },
   vite: {
+    optimizeDeps: {
+      exclude: ["vee-validate"],
+    },
     resolve: {
       alias: {
         ".prisma/client/index-browser":
