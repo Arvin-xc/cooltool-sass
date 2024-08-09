@@ -9,13 +9,13 @@ const routes = useNestedRouteTree();
     <aside
       class="inset-y-0 left-0 z-10 w-16 lg:w-40 flex-col border-r bg-background flex"
     >
-      <nav class="flex flex-col items-center gap-1 px-2 py-5 border-b">
+      <nav class="flex flex-col items-center px-2 py-5 border-b">
         <NuxtLink to="/">
           <div class="flex items-center gap-1">
             <div
               class="group flex h-12 w-12 shrink-0 items-center justify-center gap-2 rounded-full text-lg font-semibold text-primary-foreground"
             >
-              <img src="/logo_border.svg" class="w-full h-full"/>
+              <img src="/logo_border.svg" class="w-full h-full" />
             </div>
             <span class="hidden font-bold lg:block">酷兔工具</span>
           </div>
