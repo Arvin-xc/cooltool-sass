@@ -43,7 +43,6 @@ export function useNestedRouteTree(): ComputedRef<RouteNode[]> {
 
   const routeTree = computed(() => {
     const routes = router.getRoutes();
-    console.log(routes)
     return buildRouteTree(routes);
   });
 
