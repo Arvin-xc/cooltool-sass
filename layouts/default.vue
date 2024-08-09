@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { Package2 } from "lucide-vue-next";
 import Toaster from "@/components/ui/toast/Toaster.vue";
 import Nav from "~/components/Nav.vue";
 const routes = useNestedRouteTree();
-console.log(routes)
 </script>
 
 <template>

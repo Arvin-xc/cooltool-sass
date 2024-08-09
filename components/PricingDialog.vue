@@ -36,7 +36,9 @@
               <div class="flex flex-col justify-between p-6">
                 <div class="text-base font-bold">
                   <span>微信扫码 支付￥</span>
-                  <span class="text-primary">{{ orders?.[0].amount }}</span>
+                  <span class="text-[#ff0000]">
+                    {{ (orders?.[0].amount || 0) / 100 }}
+                  </span>
                 </div>
                 <div class="flex flex-col gap-2">
                   <div>开通邮箱：{{ user.email }}</div>

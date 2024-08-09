@@ -3,10 +3,12 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useToast } from "./ui/toast";
 
 const supabaeClient = useSupabaseClient();
 const isLoading = ref(false);
 
+const { toast } = useToast();
 async function onSubmit(event: Event) {
   event.preventDefault();
   isLoading.value = true;
@@ -28,6 +30,9 @@ const onSendEmail = async () => {
       .finally(() => {
         isLoading.value = false;
       });
+    toast({
+      title: "邮件发送成功，请前往邮箱查收登录链接！",
+    });
   }
 };
 </script>
@@ -49,13 +54,10 @@ const onSendEmail = async () => {
             v-model="email"
           />
         </div>
-        <Button :disabled="isLoading" @click="onSendEmail">
-          <div v-if="isLoading" class="mr-2 h-4 w-4 animate-spin">loading</div>
-          Sign In with Email
-        </Button>
+        <Button :disabled="isLoading" @click="onSendEmail"> 发送邮件 </Button>
       </div>
     </form>
-    <div class="relative">
+    <!-- <div class="relative">
       <div class="absolute inset-0 flex items-center">
         <span class="w-full border-t" />
       </div>
@@ -70,6 +72,6 @@ const onSendEmail = async () => {
       <GitHubLogo v-else class="mr-2 h-4 w-4" />
       {{ isLoading }}
       GitHub
-    </Button>
+    </Button> -->
   </div>
 </template>
