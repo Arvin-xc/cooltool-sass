@@ -12,7 +12,14 @@ export default defineNuxtConfig({
     "shadcn-nuxt",
     "@nuxtjs/supabase",
     "@vee-validate/nuxt",
+    "nuxt-security",
   ],
+  security: {
+    headers: {
+      crossOriginEmbedderPolicy:
+        process.env.NODE_ENV === "development" ? "unsafe-none" : "require-corp",
+    },
+  },
   shadcn: {
     /**
      * Prefix for all the imported component

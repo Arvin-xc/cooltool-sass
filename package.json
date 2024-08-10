@@ -29,6 +29,7 @@
     "cryptojs": "^2.5.3",
     "lucide-vue-next": "^0.424.0",
     "nuxt": "^3.12.4",
+    "nuxt-security": "2.0.0-rc.9",
     "qrcode": "^1.5.4",
     "radix-vue": "^1.9.2",
     "seedrandom": "^3.0.5",
