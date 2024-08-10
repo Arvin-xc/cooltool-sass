@@ -39,6 +39,6 @@ const routes = useNestedRouteTree();
         <slot />
       </main>
     </div>
+    <Toaster />
   </div>
-  <Toaster />
 </template>

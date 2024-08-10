@@ -4,7 +4,6 @@
   "type": "module",
   "scripts": {
     "build": "nuxt build",
-    "build:sw": "SW=true nuxt build",
     "dev": "nuxt dev --host",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
@@ -51,9 +50,6 @@
     "prisma-dbml-generator": "^0.12.0",
     "supabase": "^1.187.10",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.4",
-    "workbox-core": "^7.1.0",
-    "workbox-precaching": "^7.1.0",
-    "workbox-routing": "^7.1.0"
+    "typescript": "^5.5.4"
   }
 }

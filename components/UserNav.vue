@@ -33,7 +33,9 @@ const { data: user } = useAsyncData("user", () => supabase.auth.getUser(), {
               user.user_metadata.username || user.email?.slice(0, 1)
             }}</AvatarFallback>
           </Avatar>
-          <p class="text-xs">{{ user.user_metadata.username || user.email }}</p>
+          <p class="text-xs">
+            {{ user.user_metadata.username || user.email }}
+          </p>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent class="w-56" align="start">
