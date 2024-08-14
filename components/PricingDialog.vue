@@ -22,7 +22,7 @@
                 class="relative w-[180px] h-[180px] border border-red flex justify-center items-center m-4"
               >
                 <div
-                  v-if="creatingOrder"
+                  v-if="createOrderStatus === 'pending'"
                   class="absolute left-0 top-0 bottom-0 right-0 bg-white/80 z-1 flex justify-center items-center"
                 >
                   <div class="flex space-x-2">
@@ -59,7 +59,7 @@
 <script lang="ts" setup>
 import QRCode from "qrcode";
 import CryptoJS from "crypto-js";
-const open = ref<boolean>(false);
+
 import {
   Dialog,
   DialogContent,
@@ -68,19 +68,34 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { tryOnScopeDispose, useIntervalFn } from "@vueuse/core";
+import { useToast } from "./ui/toast";
+import { useVIPStore } from "~/stores/user";
+
+const open = ref<boolean>(false);
+const vipStore = useVIPStore();
+const toast = useToast();
 const { data: pricing } = useFetch("/api/pricing");
 const selectedPricing = ref(pricing.value?.data?.[0]);
 const user = useSupabaseUser();
+
+const isSuccessful = ref(false);
+
 const {
   data: orders,
   execute: createOrder,
-  pending: creatingOrder,
+  status: createOrderStatus,
 } = useFetch("/api/order", {
   method: "POST",
   body: {
     subscriptionType: selectedPricing.value?.type,
   },
   immediate: false,
+  onResponse(res) {
+    if (res.response.status === 200) {
+      checkOrderStatus();
+    }
+  },
   watch: [selectedPricing],
 });
 
@@ -92,6 +107,71 @@ watch(open, () => {
     return;
   }
   createOrder();
+});
+
+const {
+  execute,
+  data,
+  error,
+  status: queryOrderStatus,
+} = useFetch("/api/order", {
+  method: "get",
+  onRequest(context) {
+    context.options.params = {
+      id: orders.value?.[0].id,
+    };
+  },
+  watch: [orders],
+  immediate: true, // 不立即执行，在轮询中手动触发
+});
+
+const checkStatus = () => {
+  execute()
+    .then(() => {
+      const status = data.value?.data?.[0].status;
+      if (status === "PAID") {
+        open.value = false;
+        isSuccessful.value = true;
+        vipStore.updateVIP(true);
+        stopPolling(); // 成功后停止轮询
+      } else if (status === "CANCELED") {
+        toast.toast({
+          title: "订单超时",
+        });
+        isSuccessful.value = true;
+        stopPolling(); // 成功后停止轮询
+      }
+    })
+    .catch((err) => {
+      console.error("请求出错:", err || error.value);
+    });
+};
+
+const {
+  pause,
+  isActive,
+  resume: checkOrderStatus,
+} = useIntervalFn(
+  () => {
+    if (!isSuccessful.value && queryOrderStatus.value !== "pending") {
+      checkStatus();
+    }
+  },
+  2000,
+  {
+    immediate: false,
+  }
+); // 每5秒查询一次
+
+const stopPolling = () => {
+  if (isActive.value) {
+    pause();
+  }
+};
+
+// 组件卸载时停止轮询
+tryOnScopeDispose(() => {
+  stopPolling();
 });
 
 watch(orders, () => {

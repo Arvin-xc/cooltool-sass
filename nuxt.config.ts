@@ -12,13 +12,10 @@ export default defineNuxtConfig({
     "shadcn-nuxt",
     "@nuxtjs/supabase",
     "@vee-validate/nuxt",
-    "nuxt-security",
+    "@pinia/nuxt",
   ],
-  security: {
-    headers: {
-      crossOriginEmbedderPolicy:
-        process.env.NODE_ENV === "development" ? "unsafe-none" : "require-corp",
-    },
+  pinia: {
+    storesDirs: ["./stores/**"],
   },
   shadcn: {
     /**

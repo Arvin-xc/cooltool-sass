@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import Toaster from "@/components/ui/toast/Toaster.vue";
 import Nav from "~/components/Nav.vue";
+import { useVIPStore } from "~/stores/user";
 const routes = useNestedRouteTree();
+const { data: vip } = useFetch("/api/vip");
+const vipStore = useVIPStore();
+vipStore.updateVIP(vip.value);
 </script>
 
 <template>
