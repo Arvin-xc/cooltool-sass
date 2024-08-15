@@ -5,12 +5,12 @@ import { useVIPStore } from "~/stores/user";
 const routes = useNestedRouteTree();
 const vipStore = useVIPStore();
 
-const subscription = await useSubscription();
+const { data: subscription } = useFetch("/api/subscription");
 const pricingDialogStore = usePricingDialogStore();
 
 vipStore.updateVIP({
-  endDate: subscription?.endDate,
-  vip: !!subscription,
+  endDate: subscription.value?.endDate,
+  vip: !!subscription.value,
 });
 </script>
 

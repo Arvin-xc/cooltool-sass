@@ -6,7 +6,6 @@ export default defineNuxtConfig({
       SUPABASE_URL: process.env.SUPABASE_URL,
     },
   },
-  ssr: process.env.NODE_ENV === "production",
   modules: [
     "@nuxtjs/tailwindcss",
     "shadcn-nuxt",

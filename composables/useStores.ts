@@ -22,3 +22,15 @@ export async function usePricing() {
 
   return pricing || [];
 }
+
+export async function useOrders() {
+  const user = useSupabaseUser();
+  const supabaseClient = useSupabaseClient<Database>();
+  const { data: orders } = await supabaseClient
+    .from("Order")
+    .select("*")
+    .filter("status", "eq", "PAID")
+    .eq("userId", user.value.id);
+
+  return orders;
+}

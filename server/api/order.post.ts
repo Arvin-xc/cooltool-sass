@@ -18,9 +18,11 @@ export default eventHandler(async (event) => {
   }
 
   const body = await readBody(event);
-  const { subscriptionType } = body;
+  console.log("post", body);
 
-  if (!subscriptionType) {
+  const { type } = body;
+
+  if (!type) {
     throw createError({
       statusCode: 400,
       message: "参数异常",
@@ -39,10 +41,7 @@ export default eventHandler(async (event) => {
   usersError && console.log("usersError", usersError);
 
   const { data: subscriptions, error: subscriptionsError } =
-    await supabaseClient
-      .from("SubscriptionPrice")
-      .select("*")
-      .eq("type", subscriptionType);
+    await supabaseClient.from("SubscriptionPrice").select("*").eq("type", type);
 
   subscriptionsError && console.log("subscriptionsError", subscriptionsError);
 
@@ -54,7 +53,7 @@ export default eventHandler(async (event) => {
       .from("Order")
       .insert({
         id: `${userIdTrailing}-${new Date().getTime()}`,
-        subscriptionType,
+        subscriptionType: type,
         status: "CREATED",
         updatedAt: new Date().toDateString(),
         amount: subscription.price,
@@ -72,12 +71,7 @@ export default eventHandler(async (event) => {
     );
     return orders;
   } else {
-    console.error(
-      "服务异常 user:",
-      users,
-      "subscriptionType",
-      subscriptionType
-    );
+    console.error("服务异常 user:", users, "subscriptionType", type);
     throw createError({
       statusCode: 500,
       message: "服务异常",

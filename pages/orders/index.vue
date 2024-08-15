@@ -8,15 +8,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import dayjs from "dayjs";
-import type { Database } from "~/@types/supabase";
 
-const user = useSupabaseUser();
-const { data: pricing } = useAsyncData("pricing", () => usePricing());
-const { data: orders } = await useSupabaseClient<Database>()
-  .from("Order")
-  .select("*")
-  .filter("status", "eq", "PAID")
-  .eq("userId", user.value.id);
+const { data: pricing } = useFetch("/api/pricing");
+const { data: orders } = useFetch("/api/orders");
 </script>
 
 <template>

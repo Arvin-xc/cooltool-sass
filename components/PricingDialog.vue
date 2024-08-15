@@ -8,7 +8,7 @@
             <Card
               v-for="item in pricing"
               :class="`w-[180px] shrink-0 border rounded-lg ${
-                item.id === selectedPricing.id ? 'border-primary' : ''
+                item.id === selectedPricing?.id ? 'border-primary' : ''
               }`"
               @click="selectedPricing = item"
             >
@@ -78,22 +78,22 @@ import { usePricingDialogStore } from "~/stores/pricing-dialog";
 const pricingDialogStore = usePricingDialogStore();
 const vipStore = useVIPStore();
 const toast = useToast();
-const pricing = await usePricing();
-const selectedPricing = ref<(typeof pricing)[number]>(pricing?.[0]);
-const user = useSupabaseUser();
+const { data: pricing } = useFetch("/api/pricing");
 
+type Pricing = typeof pricing.value;
+type PricingItem = Pricing extends null ? null : NonNullable<Pricing>[number];
+
+const selectedPricing = ref<PricingItem | null>();
+const user = useSupabaseUser();
 const isSuccessful = ref(false);
 
-const {
-  data: orders,
-  execute: createOrder,
-  status: createOrderStatus,
-} = useFetch("/api/order", {
-  method: "POST",
-  body: {
-    subscriptionType: selectedPricing.value?.type,
-  },
+const { data: orders, status: createOrderStatus } = useFetch("/api/order", {
+  method: "post",
+  body: selectedPricing,
   immediate: false,
+  onRequest() {
+    console.log(selectedPricing.value);
+  },
   onResponse(res) {
     if (res.response.status === 200) {
       checkOrderStatus();
@@ -107,12 +107,12 @@ watch(pricingDialogStore, () => {
     stopPolling();
     return;
   }
+});
 
-  if (!selectedPricing.value) {
-    console.error("不存在selectedPricing", selectedPricing.value);
-    return;
+watch(pricing, () => {
+  if (pricing.value) {
+    selectedPricing.value = pricing.value[0];
   }
-  createOrder();
 });
 
 const {
@@ -120,7 +120,7 @@ const {
   data,
   error,
   status: queryOrderStatus,
-} = useFetch("/api/order", {
+} = useFetch("/api/order/", {
   method: "get",
   onRequest(context) {
     context.options.params = {
@@ -128,13 +128,13 @@ const {
     };
   },
   watch: [orders],
-  immediate: true, // 不立即执行，在轮询中手动触发
+  immediate: false, // 不立即执行，在轮询中手动触发
 });
 
 const checkStatus = () => {
   execute()
     .then(() => {
-      const status = data.value?.data?.[0].status;
+      const status = data.value?.[0].status;
       if (status === "PAID") {
         pricingDialogStore.updateOpenState(false);
         isSuccessful.value = true;
