@@ -1,9 +1,10 @@
 import type { Database } from "~/@types/supabase";
 
-const user = await useSupabaseUser();
-const supabaseClient = await useSupabaseClient<Database>();
-
 export async function useSubscription() {
+  const user = await useSupabaseUser();
+  const supabaseClient = await useSupabaseClient<Database>();
+
+  if (!user.value) return null;
   const { data: subscription } = await supabaseClient
     .from("Subscription")
     .select("*")
@@ -13,6 +14,8 @@ export async function useSubscription() {
 }
 
 export async function usePricing() {
+  const supabaseClient = await useSupabaseClient<Database>();
+
   const { data: pricing } = await supabaseClient
     .from("SubscriptionPrice")
     .select("*");
