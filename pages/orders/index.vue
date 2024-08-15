@@ -11,7 +11,7 @@ import dayjs from "dayjs";
 import type { Database } from "~/@types/supabase";
 
 const user = useSupabaseUser();
-const pricing = await usePricing();
+const { data: pricing } = useAsyncData("pricing", () => usePricing());
 const { data: orders } = await useSupabaseClient<Database>()
   .from("Order")
   .select("*")
@@ -37,7 +37,7 @@ const { data: orders } = await useSupabaseClient<Database>()
           <TableRow v-for="order in orders" :key="order.id">
             <TableCell class="font-medium">
               {{
-                pricing.find((item) => item.type === order.subscriptionType)
+                pricing?.find((item) => item.type === order.subscriptionType)
                   ?.title
               }}
             </TableCell>
