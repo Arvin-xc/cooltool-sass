@@ -3,7 +3,6 @@ import { Database } from "~/@types/supabase";
 
 export default eventHandler(async (event) => {
   const user = await serverSupabaseUser(event);
-  const supabaseClient = await serverSupabaseClient<Database>(event);
 
   if (!user) {
     throw createError({
@@ -11,6 +10,7 @@ export default eventHandler(async (event) => {
       message: "未登录",
     });
   }
+  const supabaseClient = await serverSupabaseClient<Database>(event);
 
   const { data: subscription } = await supabaseClient
     .from("Subscription")
