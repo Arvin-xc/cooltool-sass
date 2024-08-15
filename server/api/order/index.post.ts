@@ -30,7 +30,7 @@ export default eventHandler(async (event) => {
     .from("User")
     .upsert({
       id: supabaseUser.id,
-      updatedAt: new Date().toDateString(),
+      updatedAt: new Date().toISOString(),
       password: "",
       inviteCode: generateInviteCode(supabaseUser.id),
       role: "USER",

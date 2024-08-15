@@ -11,6 +11,7 @@ import dayjs from "dayjs";
 import type { Database } from "~/@types/supabase";
 
 const user = await useSupabaseUser();
+const pricing = await usePricing();
 const { data: orders } = await useSupabaseClient<Database>()
   .from("Order")
   .select("*")
@@ -28,18 +29,24 @@ const { data: orders } = await useSupabaseClient<Database>()
             <TableHead class="w-[100px]"> 订单类型 </TableHead>
             <TableHead>订单状态</TableHead>
             <TableHead>创建时间</TableHead>
+            <TableHead>支付时间</TableHead>
             <TableHead class="text-right"> 金额 </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           <TableRow v-for="order in orders" :key="order.id">
             <TableCell class="font-medium">
-              {{ order.subscriptionType }}
+              {{
+                pricing.find((item) => item.type === order.subscriptionType)
+                  ?.title
+              }}
             </TableCell>
-            <TableCell>{{ order.status }}</TableCell>
+            <TableCell>支付成功</TableCell>
             <TableCell>
-              {{ dayjs(order.createdAt).utc().format("YYYY-MM-DD hh:mm:ss") }}
-              {{ order.createdAt }}
+              {{ dayjs(order.createdAt).format("YYYY-MM-DD hh:mm:ss") }}
+            </TableCell>
+            <TableCell>
+              {{ dayjs(order.updatedAt).format("YYYY-MM-DD hh:mm:ss") }}
             </TableCell>
             <TableCell class="text-right">
               {{ order.amount }}
