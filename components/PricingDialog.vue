@@ -92,7 +92,7 @@ const { data: orders, status: createOrderStatus } = useFetch("/api/order", {
   body: selectedPricing,
   immediate: false,
   onRequest() {
-    console.log(selectedPricing.value);
+    stopPolling();
   },
   onResponse(res) {
     if (res.response.status === 200) {
