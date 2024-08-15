@@ -35,11 +35,17 @@ const pricingDialogStore = usePricingDialogStore();
           variant="ghost"
           class="relative rounded-full px-0 gap-2 py-6 w-full flex"
         >
-          <Avatar class="h-8 w-8">
-            <AvatarImage :src="user.user_metadata.avatar" alt="@shadcn" />
-            <AvatarFallback>{{
-              user.user_metadata.username || user.email?.slice(0, 1)
-            }}</AvatarFallback>
+          <Avatar class="h-8 w-8 relative overflow-visible">
+            <div class="absolute right-[-6px] top-[-6px]" v-if="vipStore.vip">
+              <IconsVIP size="18" />
+            </div>
+            <AvatarImage
+              class="rounded-full overflow-hidden"
+              :src="user.user_metadata.avatar"
+            />
+            <AvatarFallback>
+              {{ user.user_metadata.username || user.email?.slice(0, 1) }}
+            </AvatarFallback>
           </Avatar>
           <p class="text-xs">
             {{ user.user_metadata.username || user.email }}
@@ -55,12 +61,13 @@ const pricingDialogStore = usePricingDialogStore();
             <p class="text-xs leading-none text-muted-foreground">
               {{ user.email }}
             </p>
-            <p
-              class="text-xs leading-none text-muted-foreground"
+            <div
+              class="text-xs leading-none text-muted-foreground flex items-center gap-1"
               v-if="vipStore.vip"
             >
-              会员到期时间:{{ vipStore.endDate }}
-            </p>
+              <p>到期时间:{{ vipStore.endDate }}</p>
+              <IconsVIP v-if="vipStore.vip" size="18" />
+            </div>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />

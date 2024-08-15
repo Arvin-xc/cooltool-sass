@@ -1,8 +1,8 @@
 import type { Database } from "~/@types/supabase";
 
 export async function useSubscription() {
-  const user = await useSupabaseUser();
-  const supabaseClient = await useSupabaseClient<Database>();
+  const user = useSupabaseUser();
+  const supabaseClient = useSupabaseClient<Database>();
 
   if (!user.value) return null;
   const { data: subscription } = await supabaseClient
@@ -14,7 +14,7 @@ export async function useSubscription() {
 }
 
 export async function usePricing() {
-  const supabaseClient = await useSupabaseClient<Database>();
+  const supabaseClient = useSupabaseClient<Database>();
 
   const { data: pricing } = await supabaseClient
     .from("SubscriptionPrice")

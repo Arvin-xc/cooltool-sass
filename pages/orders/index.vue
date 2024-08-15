@@ -10,7 +10,7 @@ import {
 import dayjs from "dayjs";
 import type { Database } from "~/@types/supabase";
 
-const user = await useSupabaseUser();
+const user = useSupabaseUser();
 const pricing = await usePricing();
 const { data: orders } = await useSupabaseClient<Database>()
   .from("Order")
@@ -56,7 +56,7 @@ const { data: orders } = await useSupabaseClient<Database>()
       </Table>
     </div>
     <p class="mt-4 text-center text-xs text-gray-500">
-      所有支付成功的订单，如有疑问请联系客服。
+      所有支付成功的订单，如需发票或有任何疑问请联系客服。
     </p>
   </div>
 </template>
