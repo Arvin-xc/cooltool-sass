@@ -3,9 +3,15 @@ import Toaster from "@/components/ui/toast/Toaster.vue";
 import Nav from "~/components/Nav.vue";
 import { useVIPStore } from "~/stores/user";
 const routes = useNestedRouteTree();
-const { data: vip } = useFetch("/api/vip");
 const vipStore = useVIPStore();
-vipStore.updateVIP(vip.value);
+
+const subscription = await useSubscription();
+const pricingDialogStore = usePricingDialogStore();
+
+vipStore.updateVIP({
+  endDate: subscription?.endDate,
+  vip: !!subscription,
+});
 </script>
 
 <template>
@@ -44,5 +50,6 @@ vipStore.updateVIP(vip.value);
       </main>
     </div>
     <Toaster />
+    <PricingDialog v-if="pricingDialogStore.open" />
   </div>
 </template>

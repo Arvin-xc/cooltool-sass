@@ -99,11 +99,11 @@ const onUploadAvatar = async (e: Event) => {
     <div>
       <h3 class="text-lg font-medium">个人设置</h3>
     </div>
-    <div class="mt-1"></div>
+    <div class="mt-5"></div>
     <form class="space-y-8 mt" @submit="onSubmit">
       <FormField v-slot="{ componentField }" name="username">
         <FormItem>
-          <FormLabel>昵称</FormLabel>
+          <FormLabel>昵称:</FormLabel>
           <FormControl>
             <Input
               type="text"
@@ -117,7 +117,7 @@ const onUploadAvatar = async (e: Event) => {
 
       <FormField name="avatar">
         <FormItem class="flex items-center gap-4">
-          <FormLabel class="h-1">头像</FormLabel>
+          <FormLabel class="h-1">头像:</FormLabel>
           <Avatar
             size="base"
             class="cursor-pointer"
@@ -140,7 +140,7 @@ const onUploadAvatar = async (e: Event) => {
 
       <FormField name="email">
         <FormItem>
-          <FormLabel>邮箱</FormLabel>
+          <FormLabel>邮箱:</FormLabel>
           <Input :default-value="user?.email" disabled />
           <FormDescription>
             邮箱作为账号唯一认证信息，不支持在线修改。如需修改请联系客服。
@@ -151,7 +151,7 @@ const onUploadAvatar = async (e: Event) => {
 
       <FormField v-slot="{ componentField }" name="bio">
         <FormItem>
-          <FormLabel>个人简介</FormLabel>
+          <FormLabel>个人简介:</FormLabel>
           <FormControl>
             <Textarea placeholder="让我们更了解你" v-bind="componentField" />
           </FormControl>

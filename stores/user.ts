@@ -1,14 +1,19 @@
 import { defineStore } from "pinia";
 
-export const useVIPStore = defineStore("user", {
+export const useVIPStore = defineStore("vipStore", {
   state: () => {
     return {
       vip: false,
+      endDate: "",
     };
   },
+
   actions: {
-    updateVIP(vip: boolean | null) {
+    updateVIP({ endDate, vip }: { endDate?: string; vip: boolean }) {
       this.vip = !!vip;
+      if (endDate) {
+        this.endDate = new Date(endDate).toLocaleDateString();
+      }
     },
   },
 });

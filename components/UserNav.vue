@@ -11,16 +11,24 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { usePricingDialogStore } from "~/stores/pricing-dialog";
 const supabase = useSupabaseClient();
 
 const { data: user } = useAsyncData("user", () => supabase.auth.getUser(), {
   transform: (data) => data.data.user,
 });
+const vipStore = useVIPStore();
+const pricingDialogStore = usePricingDialogStore();
 </script>
 
 <template>
   <template v-if="user">
-    <PricingDialog> <Button> 开通会员 </Button> </PricingDialog>
+    <Button
+      v-if="!vipStore.vip"
+      @click="pricingDialogStore.updateOpenState(true)"
+    >
+      开通会员
+    </Button>
     <DropdownMenu>
       <DropdownMenuTrigger as-child>
         <Button
@@ -47,6 +55,12 @@ const { data: user } = useAsyncData("user", () => supabase.auth.getUser(), {
             <p class="text-xs leading-none text-muted-foreground">
               {{ user.email }}
             </p>
+            <p
+              class="text-xs leading-none text-muted-foreground"
+              v-if="vipStore.vip"
+            >
+              会员到期时间:{{ vipStore.endDate }}
+            </p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
@@ -55,9 +69,11 @@ const { data: user } = useAsyncData("user", () => supabase.auth.getUser(), {
             个人中心
             <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            账单
-            <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+          <NuxtLink to="/orders">
+            <DropdownMenuItem> 订单明细 </DropdownMenuItem>
+          </NuxtLink>
+          <DropdownMenuItem @click="pricingDialogStore.updateOpenState(true)">
+            {{ vipStore.vip ? "续费" : "开通" }}会员
           </DropdownMenuItem>
           <NuxtLink to="/settings">
             <DropdownMenuItem>
@@ -65,7 +81,6 @@ const { data: user } = useAsyncData("user", () => supabase.auth.getUser(), {
               <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
             </DropdownMenuItem>
           </NuxtLink>
-          <DropdownMenuItem>New Team</DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem>

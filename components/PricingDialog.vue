@@ -1,14 +1,17 @@
 <template>
-  <Dialog v-model:open="open">
-    <DialogTrigger>
-      <slot />
-    </DialogTrigger>
+  <Dialog v-model:open="pricingDialogStore.open">
     <DialogContent class="max-w-4xl">
       <DialogHeader>
         <DialogTitle class="text-center">开通会员</DialogTitle>
         <DialogDescription>
           <div class="flex gap-6 justify-between">
-            <Card v-for="item in pricing?.data" class="w-[180px] shrink-0">
+            <Card
+              v-for="item in pricing"
+              :class="`w-[180px] shrink-0 border rounded-lg ${
+                item.id === selectedPricing.id ? 'border-primary' : ''
+              }`"
+              @click="selectedPricing = item"
+            >
               <CardHeader>
                 <CardTitle>￥{{ item.price / 100 }}</CardTitle>
                 <CardDescription>{{ item.title }}</CardDescription>
@@ -66,17 +69,17 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { tryOnScopeDispose, useIntervalFn } from "@vueuse/core";
 import { useToast } from "./ui/toast";
 import { useVIPStore } from "~/stores/user";
+import { usePricingDialogStore } from "~/stores/pricing-dialog";
 
-const open = ref<boolean>(false);
+const pricingDialogStore = usePricingDialogStore();
 const vipStore = useVIPStore();
 const toast = useToast();
-const { data: pricing } = useFetch("/api/pricing");
-const selectedPricing = ref(pricing.value?.data?.[0]);
+const pricing = await usePricing();
+const selectedPricing = ref<(typeof pricing)[number]>(pricing?.[0]);
 const user = useSupabaseUser();
 
 const isSuccessful = ref(false);
@@ -99,8 +102,11 @@ const {
   watch: [selectedPricing],
 });
 
-watch(open, () => {
-  if (!open.value) return;
+watch(pricingDialogStore, () => {
+  if (!pricingDialogStore.open) {
+    stopPolling();
+    return;
+  }
 
   if (!selectedPricing.value) {
     console.error("不存在selectedPricing", selectedPricing.value);
@@ -130,9 +136,9 @@ const checkStatus = () => {
     .then(() => {
       const status = data.value?.data?.[0].status;
       if (status === "PAID") {
-        open.value = false;
+        pricingDialogStore.updateOpenState(false);
         isSuccessful.value = true;
-        vipStore.updateVIP(true);
+        vipStore.updateVIP({ vip: true });
         stopPolling(); // 成功后停止轮询
       } else if (status === "CANCELED") {
         toast.toast({
