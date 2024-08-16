@@ -46,7 +46,9 @@ vipStore.updateVIP({
     <div class="flex flex-col flex-1">
       <Header />
       <main class="grid flex-1 items-start gap-4 p-6">
-        <slot />
+        <div class="h-full rounded border rounded overflow-hidden">
+          <slot />
+        </div>
       </main>
     </div>
     <Toaster />

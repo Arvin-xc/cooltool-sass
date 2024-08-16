@@ -4,11 +4,11 @@
 const input = "/Users/liuxichuan/GM/douyin-cocacola-led/public/webp/input.webm";
 const output = "/Users/liuxichuan/output.mp4";
 const outputOptions = [
-  "-c:v libx264", // 使用H.264编码
-  "-crf 23", // 设置质量等级，值越小质量越高
-  "-preset fast", // 设置编码速度
-  "-c:a aac", // 音频编码器
-  "-b:a 128k", // 设置音频比特率
+  "-c:v libx264",
+  "-crf 23",
+  "-preset fast",
+  "-c:a aac",
+  "-b:a 128k",
 ];
 window.__electron_preload__invokeFFmpeg?.({
   input,
