@@ -2,7 +2,10 @@ import { serverSupabaseClient, serverSupabaseUser } from "#supabase/server";
 import { Database } from "~/@types/supabase";
 
 export default eventHandler(async (event) => {
-  const user = await serverSupabaseUser(event);
+  let user;
+  try {
+    user = await serverSupabaseUser(event);
+  } catch (e) {}
 
   if (!user) {
     throw createError({

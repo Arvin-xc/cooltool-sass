@@ -18,7 +18,10 @@ import {
 
 definePageMeta({
   name: "视频格式转换",
+  electron: true,
 });
+
+console.log(useRoute())
 const accept = "video/*";
 const limit = ref<ReturnType<typeof pLimit>>();
 const uploadRef = ref<{ onClick: () => void }>();

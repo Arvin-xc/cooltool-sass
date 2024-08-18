@@ -45,11 +45,13 @@ vipStore.updateVIP({
     </aside>
     <div class="flex flex-col flex-1">
       <Header />
-      <main class="grid flex-1 items-start gap-4 p-6">
-        <div class="h-full rounded border rounded overflow-hidden">
-          <slot />
-        </div>
-      </main>
+      <ElectronWrapper>
+        <main class="grid flex-1 items-start gap-4 p-6 h-full">
+          <div class="h-full rounded border rounded overflow-hidden">
+            <slot />
+          </div>
+        </main>
+      </ElectronWrapper>
     </div>
     <Toaster />
     <PricingDialog v-if="pricingDialogStore.open" />
