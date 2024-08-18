@@ -159,34 +159,40 @@ export const settings = [
   //   ],
   // },
   {
-    title: "旋转/翻转",
+    title: "旋转",
     key: "rotate",
     options: [
       {
         label: "顺时针旋转90度",
-        value: "-vf transpose=1",
+        value: "transpose=1",
       },
       {
         label: "旋转180度",
-        value: "-vf rotate=PI",
+        value: "rotate=PI",
       },
       {
         label: "逆时针旋转90度",
-        value: "-vf transpose=2",
+        value: "transpose=2",
       },
+    ],
+  },
+  {
+    title: "翻转",
+    key: "vf",
+    options: [
       {
         label: "垂直镜像翻转",
-        value: "-vf vflip", // 垂直翻转
+        value: "vflip", // 垂直翻转
       },
       {
         label: "水平镜像翻转",
-        value: "-vf hflip", // 水平翻转
+        value: "hflip", // 水平翻转
       },
     ],
   },
 ] as const;
 
-export const videoFormats = ["mp4", "3gp", "mov"] as const;
+
 
 export type ConvertOptionKey = (typeof settings)[number]["key"];
 export type VideoConverterOptions = Record<ConvertOptionKey, string>;

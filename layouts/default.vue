@@ -30,7 +30,7 @@ vipStore.updateVIP({
             <span class="hidden font-bold lg:block">酷兔工具</span>
           </div>
         </NuxtLink>
-        <div class="text-xs">安全便捷的工具箱</div>
+        <div class="text-xs">认真生活、快乐工作</div>
       </nav>
       <Nav
         :links="tool.children"

@@ -3,28 +3,26 @@ import { v4 as uuid } from "uuid";
 import { Icon } from "@iconify/vue";
 import dayjs from "dayjs";
 import { filesize } from "filesize";
-import { getVideoDuration } from "~/lib/utils";
+import { getVideoDuration, openFile } from "~/lib/utils";
 import {
   useConverterSettingStore,
-  videoFormats,
   type VideoConverterOptions,
 } from "~/stores/video/useConverterSettings";
 import pLimit from "p-limit";
 import type { ProgressVariants } from "~/components/ui/progress";
-import { useToast } from "~/components/ui/toast";
-import { useScroll } from "@vueuse/core";
+import {
+  videoConverterOptions,
+  videoFormats,
+  type VideoFormat,
+} from "~/config/tools.video";
 
 definePageMeta({
   name: "视频格式转换",
 });
-
 const accept = "video/*";
-const { toast } = useToast();
 const limit = ref<ReturnType<typeof pLimit>>();
 const uploadRef = ref<{ onClick: () => void }>();
-const localConverterOptions = ref<VideoConverterOptions>();
 const tableRef = ref<HTMLTableElement | null>(null);
-type VideoFormat = (typeof videoFormats)[number];
 const targetVideoFormat = ref<VideoFormat>("mp4");
 type RcFile = {
   file: File;
@@ -37,7 +35,7 @@ type RcFile = {
   id: string;
 };
 const videos = ref<RcFile[]>([]);
-const outputDir = ref<string | undefined>();
+const outputDir = ref<string>("");
 const converterSettingStore = useConverterSettingStore();
 
 const convertFn = async (newFile: RcFile) => {
@@ -53,7 +51,8 @@ const convertFn = async (newFile: RcFile) => {
       // @ts-ignore electron内存在file.path，浏览器内使用URL.createObjectURL
       input: newFile.file.path || URL.createObjectURL(newFile.file),
       inputOptions: [],
-      outputOptions: ["-c:v libx264", "-c:a aac"],
+      outputOptions:
+        videoConverterOptions[targetVideoFormat.value].outputOptions,
       output: outputPath,
       onFinish() {
         newFile.percent = 100;
@@ -107,39 +106,14 @@ const onSelectFiles = (files: File[]) => {
 const onRemove = (videoId: string) => {
   videos.value = videos.value.filter((video) => video.id !== videoId);
 };
-const onSelectFolder = async () => {
-  const folder = await window.electronAPI?.selectFolder();
-  if (folder) {
-    outputDir.value = folder;
-  }
-};
 
 const onSettingChange = (settings: VideoConverterOptions) => {
-  console.log("settings changed", settings);
   converterSettingStore.updateDefaultSettings(settings);
 };
 
-onMounted(async () => {
+onMounted(() => {
   limit.value = pLimit(navigator.hardwareConcurrency || 2);
-  outputDir.value = await window.electronAPI?.getPath("desktop");
 });
-
-const onOpenFile = (file: RcFile) => {
-  if (file.response) {
-    try {
-      window.electronAPI?.openFile(file.response);
-    } catch (error) {
-      toast({
-        title: "打开文件失败",
-      });
-      console.error("打开文件失败", error);
-    }
-  } else {
-    toast({
-      title: "文件不存在",
-    });
-  }
-};
 </script>
 <template>
   <div class="h-full bg-white p-6">
@@ -222,7 +196,7 @@ const onOpenFile = (file: RcFile) => {
                   <Button
                     :disabled="video.percent !== 100"
                     size="xs"
-                    @click="() => onOpenFile(video)"
+                    @click="() => openFile(video.response)"
                     >打开文件</Button
                   >
                   <Button
@@ -250,15 +224,15 @@ const onOpenFile = (file: RcFile) => {
       subtitle="拖入、粘贴或点击下方按钮添加视频"
       :hidden="videos.length"
     >
-      <div class="flex gap-4 justify-center items-center p-2">
+      <div class="flex gap-4 justify-center items-center p-2 mt-4">
         <div class="flex items-center gap-2">
           <Label for="area" class="shrink-0">目标格式：</Label>
           <Select
             :model-value="targetVideoFormat"
             @update:model-value="(value) => (targetVideoFormat = value as VideoFormat)"
           >
-            <SelectTrigger id="area">
-              <SelectValue placeholder="Select" />
+            <SelectTrigger class="py-2 min-w-20 h-9" id="area">
+              <SelectValue placeholder="请选择" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem
@@ -266,29 +240,16 @@ const onOpenFile = (file: RcFile) => {
                 :value="option"
                 v-for="option in videoFormats"
               >
-                {{ option }}
+                {{ option.toUpperCase() }}
               </SelectItem>
             </SelectContent>
           </Select>
         </div>
-        <Button
-          size="xs"
-          variant="outline"
-          @click="converterSettingStore.updateOpenState(true)"
-        >
-          高级设置
-        </Button>
       </div>
-      <div class="flex items-center mt-2">
-        <span>输出目录：</span>
-
-        <div
-          class="rounded border text-left w-max px-2 py-1 cursor-pointer text-sm hover:border-primary"
-          @click="onSelectFolder"
-        >
-          {{ outputDir }}
-        </div>
-      </div>
+      <OurDirSetting
+        :output-dir="outputDir"
+        @change="(dir) => (outputDir = dir)"
+      />
     </Upload>
     <VideoOptionsDialog @change="onSettingChange" />
   </div>
