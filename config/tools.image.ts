@@ -10,11 +10,8 @@ export const imageFormats = [
   "xbm",
   "xpm",
   "tga",
-  "psd",
   "tif",
   "rgb",
-  "dds",
-  "avi",
   "jp2",
   "pcx",
   "pbm",
@@ -22,7 +19,6 @@ export const imageFormats = [
   "ppm",
   "exr",
   "hdr",
-  "yuv",
 ] as const;
 
 export type ImageFormat = (typeof imageFormats)[number];
@@ -77,20 +73,11 @@ export const imageConverterOptions: Record<
   tga: {
     outputOptions: ["-c:v", "targa"],
   },
-  psd: {
-    outputOptions: ["-c:v", "psd"],
-  },
   tif: {
     outputOptions: ["-c:v", "tiff"],
   },
   rgb: {
     outputOptions: ["-c:v", "rgb24"],
-  },
-  dds: {
-    outputOptions: ["-c:v", "dds"],
-  },
-  avi: {
-    outputOptions: ["-c:v", "rawvideo"],
   },
   jp2: {
     outputOptions: ["-c:v", "jpeg2000"],
@@ -112,8 +99,5 @@ export const imageConverterOptions: Record<
   },
   hdr: {
     outputOptions: ["-c:v", "hdr"],
-  },
-  yuv: {
-    outputOptions: ["-c:v", "yuv420p"],
   },
 };
