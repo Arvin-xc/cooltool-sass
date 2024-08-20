@@ -65,6 +65,9 @@ const convertFn = async (newFile: RcFile) => {
     <template #format="{ data }">
       {{ data.file.type.split("/")[1].toUpperCase() }}
     </template>
+    <template #compressed="{ data }">
+      {{ data.response ? filesize((data.response as File)?.size) : "--" }}
+    </template>
     <template #percent="{ data }">
       <Progress
         class="h-2.5"

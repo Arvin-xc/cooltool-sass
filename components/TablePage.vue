@@ -107,9 +107,13 @@ const onSaveAll = async () => {
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>确认要清除所有视频？</DialogTitle>
+                <DialogTitle>确认要清除所有文件？</DialogTitle>
                 <DialogDescription>
-                  仅会清除列表，已转换的文件仍然在输出目录内。
+                  {{
+                    $route.meta.electron
+                      ? "仅会清除列表，已转换的文件仍然在输出目录内。"
+                      : "清除后无法找回文件，确认要清除全部文件吗？"
+                  }}
                 </DialogDescription>
               </DialogHeader>
               <DialogFooter class="space-x-2">
