@@ -89,9 +89,6 @@ const onSaveAll = async () => {
     return;
   }
   await downloadFiles(files);
-  toast({
-    title: "导出成功",
-  });
 };
 </script>
 <template>
