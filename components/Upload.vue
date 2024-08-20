@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { useClipboardItems, useDropZone, useEventListener } from "@vueuse/core";
-import { cva } from "class-variance-authority";
+import { useDropZone, useEventListener } from "@vueuse/core";
 
 const { title, subtitle, label, accept } = defineProps<{
-  title: string;
   subtitle: string;
   multiple?: boolean;
   label?: string;
@@ -92,7 +90,7 @@ defineExpose({
         ]"
       >
         <div class="flex flex-col items-center gap-1 text-center">
-          <h3 class="text-2xl font-bold tracking-tight">{{ title }}</h3>
+          <h3 class="text-2xl font-bold tracking-tight">{{ $route.name }}</h3>
           <p class="text-sm text-muted-foreground">
             {{ subtitle }}
           </p>

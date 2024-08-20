@@ -14,6 +14,7 @@ const props = withDefaults(
       class?: HTMLAttributes["class"];
       variant?: ProgressVariants["variant"];
       label?: boolean;
+      indeterminate?: boolean;
     }
   >(),
   {
@@ -26,6 +27,10 @@ const delegatedProps = computed(() => {
 
   return delegated;
 });
+
+const indeterminate = computed(
+  () => props.indeterminate && (!props.modelValue || props.modelValue < 100)
+);
 </script>
 
 <template>
@@ -43,12 +48,39 @@ const delegatedProps = computed(() => {
         :class="
           cn(
             progressVariants({ variant }),
-            'h-full w-full flex-1 transition-all'
+            'h-full flex-1 transition-all relative',
+            indeterminate ? 'indeterminate-progress' : 'w-full'
           )
         "
+        v-if="!indeterminate"
         :style="`transform: translateX(-${100 - (props.modelValue ?? 0)}%);`"
       />
+      <ProgressIndicator
+        v-if="indeterminate"
+        class="h-full w-full flex-1 indeterminate-progress"
+      />
     </ProgressRoot>
-    <div v-if="label">{{ Math.ceil(props.modelValue || 0) }}%</div>
+    <div v-if="label && !indeterminate">
+      {{ Math.ceil(props.modelValue || 0) }}%
+    </div>
   </div>
 </template>
+
+<style scoped>
+@keyframes indeterminate {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.indeterminate-progress {
+  animation: indeterminate 1s infinite linear;
+  background-color: var(
+    --indeterminate-color,
+    #007bff
+  ); /* 可以根据需要自定义颜色 */
+}
+</style>
