@@ -6,7 +6,7 @@ definePageMeta({
   name: "图片压缩",
 });
 
-const accept = "image/*";
+const accept = "image/png,image/jpg,image/jpeg,image/webp,image/xml+svg";
 const headers = [
   {
     class: "w-[20%]",

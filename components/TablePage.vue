@@ -77,7 +77,7 @@ const onSettingChange = (settings: VideoConverterOptions) => {
 onMounted(() => {
   limit.value = pLimit(navigator.hardwareConcurrency || 2);
 });
-const onSaveAll = () => {
+const onSaveAll = async () => {
   const files = tableList.value
     .map((item) => item.response)
     .filter((item) => item instanceof File);
@@ -88,7 +88,10 @@ const onSaveAll = () => {
     });
     return;
   }
-  downloadFiles(files);
+  await downloadFiles(files);
+  toast({
+    title: "导出成功",
+  });
 };
 </script>
 <template>
