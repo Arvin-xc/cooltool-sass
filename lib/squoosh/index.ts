@@ -244,7 +244,15 @@ export async function compressImage(
       decoded: decodeData,
       preprocessed: imageData,
     },
-    defaultProcessorState,
+    {
+      ...defaultProcessorState,
+      quantize: {
+        enabled: true,
+        zx: 0,
+        maxNumColors: 256,
+        dither: 1.0,
+      },
+    },
     workerBridge
   );
 
