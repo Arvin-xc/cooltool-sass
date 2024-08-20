@@ -35,7 +35,7 @@ const headers = [
   },
 ];
 const convertFn = async (newFile: RcFile) => {
-  const { compressImage } = await import("./squoosh");
+  const { compressImage } = await import("~/lib/squoosh");
   const file = await compressImage(newFile.file);
   if (file) {
     newFile.response = file;
