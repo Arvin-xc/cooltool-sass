@@ -54,6 +54,7 @@ vipStore.updateVIP({
       </ElectronWrapper>
     </div>
     <Toaster />
+
     <PricingDialog v-if="pricingDialogStore.open" />
   </div>
 </template>

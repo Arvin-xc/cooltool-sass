@@ -35,7 +35,7 @@ const filterAcceptFiles = (files: File[]) => {
   if (subType === "*") {
     return files.filter((file) => file.type.split("/")[0] === mainType);
   } else {
-    return files.filter((file) => file.type === accept);
+    return files.filter((file) => accept?.split(",").includes(file.type));
   }
 };
 
