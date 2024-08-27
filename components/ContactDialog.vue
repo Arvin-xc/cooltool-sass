@@ -12,8 +12,13 @@ import {
 // @ts-ignore
 import qqGroupQRCode from "~/assets/img/qq-group-qrcode.jpg";
 
+const qqGroupUrl = "https://qm.qq.com/q/1dGoup6rwU";
 const onJoinQQGroup = () => {
-  window.open("https://qm.qq.com/q/1dGoup6rwU", "__blank");
+  if (typeof window.__electron_preload__openExternal === "function") {
+    window.__electron_preload__openExternal?.(qqGroupUrl);
+  } else {
+    window.open(qqGroupUrl, "_blank");
+  }
 };
 </script>
 

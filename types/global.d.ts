@@ -19,6 +19,7 @@ export type FFmpegParams = {
 declare global {
   interface Window {
     __electron_preload__invokeFFmpeg?: (args: FFmpegParams) => Promise<void>;
+    __electron_preload__openExternal?: (url: string) => Promise<void>;
     electronAPI?: {
       selectFolder: () => Promise<string | null>;
       openFile: (filePath: string) => Promise<void>;

@@ -159,22 +159,24 @@ const onSaveAll = async () => {
                 <TableCell v-for="item in headers">
                   <slot :name="item.key" :data="file" />
                 </TableCell>
-                <TableCell class="flex gap-4">
-                  <Button
-                    :disabled="file.percent !== 100"
-                    size="xs"
-                    @click="() => openFile(file.response)"
-                  >
-                    {{ $route.meta.electron ? "打开文件" : "保存文件" }}
-                  </Button>
-                  <Button
-                    @click="() => onRemove(file.id)"
-                    :disabled="file.percent !== 100"
-                    size="xs"
-                    variant="destructive"
-                  >
-                    移除
-                  </Button>
+                <TableCell>
+                  <div class="flex gap-4 items-center">
+                    <Button
+                      :disabled="file.percent !== 100"
+                      size="xs"
+                      @click="() => openFile(file.response)"
+                    >
+                      {{ $route.meta.electron ? "打开文件" : "保存文件" }}
+                    </Button>
+                    <Button
+                      @click="() => onRemove(file.id)"
+                      :disabled="file.percent !== 100"
+                      size="xs"
+                      variant="destructive"
+                    >
+                      移除
+                    </Button>
+                  </div>
                 </TableCell>
               </TableRow>
             </TableBody>
