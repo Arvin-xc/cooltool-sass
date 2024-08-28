@@ -37,7 +37,7 @@ const onJoinQQGroup = () => {
           class="w-full flex justify-center mt-6 cursor-pointer"
           @click="onJoinQQGroup"
         >
-          <img :src="qqGroupQRCode" class="w-[70%]" />
+          <img :src="qqGroupQRCode" class="w-[260px] h-[260px]" />
         </div>
       </DialogHeader>
 
