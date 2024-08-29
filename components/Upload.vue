@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { useDropZone, useEventListener } from "@vueuse/core";
 
-const { title, subtitle, label, accept } = defineProps<{
+const { subtitle, label, accept, percent } = defineProps<{
   subtitle: string;
   multiple?: boolean;
+  percent?: number;
   label?: string;
   accept?: string;
 }>();
@@ -79,7 +80,7 @@ defineExpose({
 
 <template>
   <div class="h-full">
-    <div class="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 h-full">
+    <div class="flex flex-1 w-full flex-col gap-4 p-4 lg:gap-6 lg:p-6 h-full">
       <div
         ref="dropZoneRef"
         :class="[
@@ -89,12 +90,24 @@ defineExpose({
           },
         ]"
       >
-        <div class="flex flex-col items-center gap-1 text-center">
+        <div class="flex flex-col w-full items-center gap-1 text-center">
           <h3 class="text-2xl font-bold tracking-tight">{{ $route.name }}</h3>
           <p class="text-sm text-muted-foreground">
             {{ subtitle }}
           </p>
-          <Button @click="onClick" class="mt-4">
+          <div
+            v-if="typeof percent === 'number' && percent < 100"
+            class="w-full h-10 mt-12 px-12"
+          >
+            <Progress :model-value="percent" />
+            <div class="flex gap-2 items-center justify-center mt-2">
+              <div class="text-sm text-muted-foreground">
+                加载必要文件中，请稍等...
+              </div>
+              <div class="text-primary">{{ percent.toFixed(2) }}%</div>
+            </div>
+          </div>
+          <Button @click="onClick" class="mt-4" v-else>
             {{ label || "添加文件" }}
           </Button>
           <div class="mt-4">

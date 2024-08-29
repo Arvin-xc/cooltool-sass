@@ -1,70 +1,36 @@
 <script setup lang="ts">
-import { filesize } from "filesize";
-import type { RcFile } from "~/components/TablePage.vue";
+import Transcript from "./components/transcript.vue";
+import { useTranscriber } from "./hooks/use-transcriber";
+import Constants from "./utils/Constants";
 
 definePageMeta({
   name: "文本提取",
 });
+const accept = "audio/*";
+const transcriber = useTranscriber();
 
-const accept = "video/";
-const headers = [
-  {
-    class: "w-[20%]",
-    label: "文件名",
-    key: "filename",
-  },
-  {
-    class: "w-[10%]",
-    label: "格式",
-    key: "format",
-  },
-  {
-    class: "w-[10%]",
-    label: "件大小",
-    key: "size",
-  },
-  {
-    class: "w-[20%]",
-    label: "处理进度",
-    key: "percent",
-  },
-  {
-    class: "w-[10%]",
-    label: "压缩后",
-    key: "compressed",
-  },
-];
-const convertFn = async (newFile: RcFile) => {
-  return newFile;
+const ready = ref<boolean>(false)
+const onUpload = (files: File[]) => {
+  const file = files[0];
+  const reader = new FileReader();
+  reader.onload = async () => {
+    const arrayBuffer = reader.result as ArrayBuffer;
+    if (!arrayBuffer) return;
+
+    const audioCTX = new AudioContext({
+      sampleRate: Constants.SAMPLING_RATE,
+    });
+    const decoded = await audioCTX.decodeAudioData(arrayBuffer);
+    transcriber.onInputChange();
+    transcriber.start(decoded);
+  };
+  reader.readAsArrayBuffer(file);
+  ready.value = true
 };
 </script>
 
 <template>
-  <TablePage
-    :headers="headers"
-    :accept="accept"
-    :title="$route.name?.toString()!"
-    :convert-fn="convertFn"
-  >
-    <template #filename="{ data }">
-      <div class="truncate">
-        {{ data.file.name }}
-      </div>
-    </template>
-    <template #size="{ data }">{{ filesize(data.file.size) }}</template>
-    <template #format="{ data }">
-      {{ data.file.type.split("/")[1].toUpperCase() }}
-    </template>
-    <template #compressed="{ data }">
-      {{ data.response ? filesize((data.response as File)?.size) : "--" }}
-    </template>
-    <template #percent="{ data }">
-      <Progress
-        class="h-2.5"
-        :model-value="data.percent"
-        :indeterminate="true"
-        :variant="data.variant"
-      />
-    </template>
-  </TablePage>
+  <Upload subtitle="语音转文字" v-if="!ready" @change="onUpload" :accept="accept"></Upload>
+  transcriber{{ transcriber }}
+  <Transcript :transcribed-data="transcriber.output" />
 </template>

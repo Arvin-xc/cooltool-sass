@@ -35,7 +35,7 @@ vipStore.updateVIP({
       <Nav
         :links="tool.children"
         :key="tool.name"
-        v-for="tool in routes.find((item) => item.path === '/tools')?.children"
+        v-for="tool in routes.find((item: RouteNode) => item.path === '/tools')?.children"
         :is-collapsed="false"
         :title="tool.name"
       />

@@ -11,8 +11,10 @@ import type { ProgressVariants } from "~/components/ui/progress";
 import { downloadFiles } from "~/lib/file";
 import { useToast } from "./ui/toast";
 
-const { accept, convertFn } = defineProps<{
+const { accept, convertFn, percent, concurrency } = defineProps<{
   accept: string;
+  concurrency?: number;
+  percent?: number;
   headers: { label: string; class: string; key: string }[];
   buttons?: { add: string };
   convertFn: (file: RcFile, outputDir: string) => Promise<RcFile>;
@@ -75,7 +77,7 @@ const onSettingChange = (settings: VideoConverterOptions) => {
 };
 
 onMounted(() => {
-  limit.value = pLimit(navigator.hardwareConcurrency || 2);
+  limit.value = pLimit(concurrency || navigator.hardwareConcurrency || 2);
 });
 const onSaveAll = async () => {
   const files = tableList.value
@@ -187,6 +189,7 @@ const onSaveAll = async () => {
     <Upload
       :accept="accept"
       multiple
+      :percent="percent"
       ref="uploadRef"
       @change="onSelectFiles"
       label="选择文件"
@@ -197,7 +200,7 @@ const onSaveAll = async () => {
       <OurDirSetting
         v-if="$route.meta.electron"
         :output-dir="outputDir"
-        @change="(dir) => (outputDir = dir)"
+        @change="(dir:string) => (outputDir = dir)"
       />
     </Upload>
     <VideoOptionsDialog @change="onSettingChange" />

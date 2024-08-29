@@ -1,20 +1,21 @@
 import { RawImage } from "@huggingface/transformers";
-
 export type TransactionData = {
   status: "progress" | "done";
   progress?: number;
 };
+
+const worker = new Worker(new URL("./matting-web-worker.ts", import.meta.url), {
+  type: "module",
+});
+
+export function loadModule(progressCallback?: (data: TransactionData) => void) {
+  worker.postMessage("");
+  worker.addEventListener("message", (event) => progressCallback?.(event.data));
+}
 export async function maskToImage(
   url: string,
   progressCallback?: (data: TransactionData) => void
 ): Promise<Blob | null> {
-  const worker = new Worker(
-    new URL("./matting-web-worker.ts", import.meta.url),
-    {
-      type: "module",
-    }
-  );
-
   const image = await RawImage.fromURL(url);
   worker.postMessage(url);
 

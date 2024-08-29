@@ -5,17 +5,19 @@ import type { TransactionData } from "~/lib/image/matting";
 
 definePageMeta({
   name: "在线抠图",
+  client: true,
 });
 
-const progress = ref<number | undefined>(0);
+const percent = ref<number | undefined>(0);
 const loading = ref<boolean>(true);
+const matting = import("~/lib/image/matting");
 
 const onLoadingModel = (data: TransactionData) => {
-  if (data.status === "progress") {
-    progress.value = data.progress;
+  if (data.status === "progress" && data.progress) {
+    percent.value = Number(data.progress.toFixed(2));
   } else if (data.status === "done") {
     loading.value = false;
-    progress.value = 100;
+    percent.value = 100;
   }
 };
 const accept = "image/*";
@@ -42,7 +44,7 @@ const headers = [
   },
 ];
 const convertFn = async (file: RcFile) => {
-  const { maskToImage } = await import("~/lib/image/matting");
+  const { maskToImage } = await matting;
 
   const newFilename = file.file.name.replace(/\.\w+$/, ".png");
   const res = await maskToImage(URL.createObjectURL(file.file), onLoadingModel);
@@ -61,9 +63,19 @@ const fileToUrl = (file?: File | string) => {
     return URL.createObjectURL(file);
   }
 };
+onMounted(async () => {
+  const { loadModule } = await matting;
+  loadModule((data) => {
+    if (typeof data.progress === "number") {
+      percent.value = data.progress;
+    }
+  });
+});
 </script>
 <template>
   <TablePage
+    :percent="percent"
+    :concurrency="1"
     :headers="headers"
     :accept="accept"
     :title="$route.name?.toString()!"
@@ -76,8 +88,7 @@ const fileToUrl = (file?: File | string) => {
     </template>
     <template #size="{ data }">{{ filesize(data.file.size) }}</template>
     <template #preview="{ data }">
-      <!-- {{ data.file.type.split("/")[1].toUpperCase() }} -->
-      <img :src="fileToUrl(data.response)" class="h-full" />
+      <img :src="fileToUrl(data.response)" class="h-12" />
     </template>
     <template #percent="{ data }">
       <Progress
