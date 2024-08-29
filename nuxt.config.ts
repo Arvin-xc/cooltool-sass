@@ -13,6 +13,11 @@ export default defineNuxtConfig({
     "@vee-validate/nuxt",
     "@pinia/nuxt",
   ],
+  vite: {
+    worker: {
+      format: "es",
+    },
+  },
   pinia: {
     storesDirs: ["./stores/**"],
   },

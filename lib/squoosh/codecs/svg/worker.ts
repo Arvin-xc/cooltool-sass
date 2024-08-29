@@ -1,7 +1,8 @@
 import { expose } from 'comlink'
+// @ts-ignore
 import { optimize } from 'svgo/dist/svgo.browser.js'
 
-function compress(svgInput) {
+function compress(svgInput: string) {
   const result = optimize(svgInput, {
     multipass: true
   })

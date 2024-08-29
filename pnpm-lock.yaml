@@ -104,6 +104,9 @@ importers:
       shadcn-nuxt:
         specifier: ^0.10.4
         version: 0.10.4(magicast@0.3.4)(rollup@4.20.0)
+      svgo:
+        specifier: ^3.3.2
+        version: 3.3.2
       tailwind-merge:
         specifier: ^2.4.0
         version: 2.4.0
@@ -138,6 +141,9 @@ importers:
       '@types/seedrandom':
         specifier: ^3.0.8
         version: 3.0.8
+      '@types/svgo':
+        specifier: ^3.0.0
+        version: 3.0.0
       '@vue/devtools-api':
         specifier: ^6.6.3
         version: 6.6.3
@@ -1983,6 +1989,10 @@ packages:
 
   '@types/seedrandom@3.0.8':
     resolution: {integrity: sha512-TY1eezMU2zH2ozQoAFAQFOPpvP15g+ZgSfTZt31AUUH/Rxtnz3H+A/Sv1Snw2/amp//omibc+AEkTaA8KUeOLQ==}
+
+  '@types/svgo@3.0.0':
+    resolution: {integrity: sha512-G5qLWNq/rMvSM1EyY4E2iEd+s9km/PxLkzPkA2lghrgWJ2jrVMuB1ZsGOzL4YAWCy5sAoUw7SEQseHE2qypF2w==}
+    deprecated: This is a stub types definition. svgo provides its own type definitions, so you do not need this installed.
 
   '@types/trusted-types@2.0.7':
     resolution: {integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==}
@@ -7925,6 +7935,10 @@ snapshots:
   '@types/retry@0.12.0': {}
 
   '@types/seedrandom@3.0.8': {}
+
+  '@types/svgo@3.0.0':
+    dependencies:
+      svgo: 3.3.2
 
   '@types/trusted-types@2.0.7': {}
 

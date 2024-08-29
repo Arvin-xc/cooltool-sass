@@ -48,8 +48,6 @@ export async function maskToImage(
 }
 
 export async function downloadModel(progressCallback: (status: any) => void) {
-  const worker = new Worker(new URL("/matting-web-worker", import.meta.url));
-
   worker.postMessage({ method: "loadModel" });
   worker.addEventListener("message", progressCallback);
 }
