@@ -4247,10 +4247,6 @@ packages:
   onnxruntime-common@1.19.0:
     resolution: {integrity: sha512-Oo16UIJ/xLOtZDVGcL4bL8EP8MiNFztyBmR3pB14D+cl/UCpOgHHzEk0MADSmYXQ0FgyEegPXtOFcJqhq1YRsw==}
 
-  onnxruntime-node@1.18.0:
-    resolution: {integrity: sha512-iTnFcxKpmywCatx8ov4GTbECe3tJk2Bp1OA2mWRJde78q+7tpPYBhKMnwhlaoKy9oKQcy4UoEuuhoy2PSD13ww==}
-    os: [win32, darwin, linux]
-
   onnxruntime-web@1.19.0:
     resolution: {integrity: sha512-EY2KjvfJ/f5nxiXDii4eD0xe5KIn+mRs55F6z2qomALyG05Qj+kqF81CKqzTa4cXowE9b9aVSqsvEVZkjOI5yA==}
 
@@ -6988,7 +6984,6 @@ snapshots:
   '@huggingface/transformers@3.0.0-alpha.7':
     dependencies:
       '@huggingface/jinja': 0.3.0
-      onnxruntime-node: 1.18.0
       onnxruntime-web: 1.19.0
       sharp: 0.33.5
 
@@ -10581,11 +10576,6 @@ snapshots:
   onnxruntime-common@1.18.0: {}
 
   onnxruntime-common@1.19.0: {}
-
-  onnxruntime-node@1.18.0:
-    dependencies:
-      onnxruntime-common: 1.18.0
-      tar: 7.4.3
 
   onnxruntime-web@1.19.0:
     dependencies:
