@@ -97,7 +97,7 @@ defineExpose({
           </p>
           <div
             v-if="typeof percent === 'number' && percent < 100"
-            class="w-full h-10 mt-12 px-12"
+            class="w-full h-10 mt-4 px-12"
           >
             <Progress :model-value="percent" />
             <div class="flex gap-2 items-center justify-center mt-2">

@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import { filesize } from "filesize";
 import type { RcFile } from "~/components/TablePage.vue";
-import type { TransactionData } from "~/lib/image/matting";
+import {
+  loadModule,
+  maskToImage,
+  type TransactionData,
+} from "~/lib/image/matting";
 
+const ONNX_MODEL_NAME = "RMBG_1.4";
 definePageMeta({
   name: "在线抠图",
   client: true,
@@ -10,7 +15,6 @@ definePageMeta({
 
 const percent = ref<number | undefined>(0);
 const loading = ref<boolean>(true);
-const matting = import("~/lib/image/matting");
 
 const onLoadingModel = (data: TransactionData) => {
   if (data.status === "progress" && data.progress) {
@@ -44,8 +48,6 @@ const headers = [
   },
 ];
 const convertFn = async (file: RcFile) => {
-  const { maskToImage } = await matting;
-
   const newFilename = file.file.name.replace(/\.\w+$/, ".png");
   const res = await maskToImage(URL.createObjectURL(file.file), onLoadingModel);
   if (res) {
@@ -64,12 +66,18 @@ const fileToUrl = (file?: File | string) => {
   }
 };
 onMounted(async () => {
-  const { loadModule } = await matting;
-  loadModule((data) => {
-    if (typeof data.progress === "number") {
-      percent.value = data.progress;
-    }
-  });
+  if (localStorage.getItem(ONNX_MODEL_NAME)) {
+    percent.value = 100;
+  } else {
+    loadModule((data) => {
+      if (typeof data.progress === "number") {
+        percent.value = data.progress;
+      }
+      if (data.status === "done") {
+        localStorage.setItem(ONNX_MODEL_NAME, "true");
+      }
+    });
+  }
 });
 </script>
 <template>
