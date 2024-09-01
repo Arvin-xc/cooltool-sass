@@ -32,6 +32,7 @@ export type RcFile = {
   percent: number;
   variant: ProgressVariants["variant"];
   timemark?: string;
+  size?: number;
   id: string;
 };
 const tableList = ref<RcFile[]>([]);
