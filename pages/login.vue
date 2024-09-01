@@ -22,14 +22,16 @@ const onBack = () => {
           <Icon icon="mdi:arrow-back" height="auto" />
         </Button>
         <div class="flex items-center text-lg font-medium">
-          <img src="/logo.svg" class="w-6 h-6 mr-2" />
-          酷兔工具
+          <div class="p-1 bg-white rounded-full w-8 h-8 mr-2">
+            <img src="/logo.svg" class="" />
+          </div>
+          <div>酷兔工具</div>
         </div>
       </div>
       <div class="relative z-20 mt-auto">
         <blockquote class="space-y-2">
           <p class="text-lg">方便安全的工具箱</p>
-          <footer class="text-sm">CoolTool</footer>
+          <footer class="text-sm">酷兔(CoolTool)</footer>
         </blockquote>
       </div>
     </div>
@@ -48,17 +50,11 @@ const onBack = () => {
         <UserAuthForm />
         <p class="text-center text-sm text-muted-foreground">
           创建账号即视为您已阅读并同意
-          <a
-            href="/"
-            class="underline underline-offset-4 hover:text-primary"
-          >
+          <a href="/" class="underline underline-offset-4 hover:text-primary">
             服务协议
           </a>
           和
-          <a
-            href="/"
-            class="underline underline-offset-4 hover:text-primary"
-          >
+          <a href="/" class="underline underline-offset-4 hover:text-primary">
             隐私政策
           </a>
           .

@@ -45,7 +45,7 @@ const onSendEmail = async () => {
           <Label class="sr-only" for="email"> Email </Label>
           <Input
             id="email"
-            placeholder="name@example.com"
+            placeholder="请输入邮箱"
             type="email"
             auto-capitalize="none"
             auto-complete="email"
