@@ -7,7 +7,7 @@
     "dev": "nuxt dev --host",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare && prisma generate && node scripts/replace-onnx-origin.cjs",
+    "postinstall": "nuxt prepare && prisma generate",
     "seed": "node --loader ts-node/esm ./prisma/seed.ts",
     "generate:types": "supabase gen types --lang=typescript --project-id qrfddtqqlixucpappihy --schema public > ./@types/supabase.ts"
   },

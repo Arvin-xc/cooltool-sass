@@ -7,12 +7,18 @@ import {
 
 env.remoteHost = "https://hf-mirror.com";
 env.allowLocalModels = false;
-
+const globalFetch = fetch;
+// @ts-ignore
+fetch = (input, init) =>
+  globalFetch(input, {
+    ...init,
+    referrerPolicy: "no-referrer",
+  });
 export async function predict(url: string) {
   const model = await AutoModel.from_pretrained("briaai/RMBG-1.4", {
     config: { model_type: "custom" },
     dtype: "fp32",
-    device: 'auto',
+    device: "auto",
     progress_callback: (event: unknown) => {
       self.postMessage(event);
     },
