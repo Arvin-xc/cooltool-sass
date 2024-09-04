@@ -7,7 +7,7 @@ const scripts = [
 
 const hubScriptPaths = [
   "./node_modules/@huggingface/transformers/src/utils/hub.js",
-  // "./node_modules/.cache/vite/client/deps/@huggingface_transformers.js",
+  "./node_modules/.cache/vite/client/deps/@huggingface_transformers.js",
 ];
 
 function replaceFn(scriptPath, origin, replace) {
