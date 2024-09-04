@@ -3,7 +3,7 @@ import {
   AutoProcessor,
   RawImage,
   env,
-} from "../transformers/transformers.min.js";
+} from "../transformers/transformers.js";
 
 env.remoteHost = "https://hf-mirror.com";
 env.allowLocalModels = false;

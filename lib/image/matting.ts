@@ -1,4 +1,4 @@
-import { RawImage } from "../transformers/transformers.min.js";
+import { RawImage } from "../transformers/transformers.js";
 export type TransactionData = {
   status: "progress" | "done";
   progress?: number;

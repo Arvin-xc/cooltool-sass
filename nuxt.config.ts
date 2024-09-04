@@ -18,6 +18,13 @@ export default defineNuxtConfig({
       format: "es",
     },
   },
+  nitro: {
+    esbuild: {
+      options: {
+        target: 'esnext'
+      }
+    }
+  },
   pinia: {
     storesDirs: ["./stores/**"],
   },
