@@ -3,13 +3,12 @@ import {
   AutoProcessor,
   RawImage,
   env,
-} from "@huggingface/transformers";
+} from "../transformers/transformers.min.js";
 
 env.remoteHost = "https://hf-mirror.com";
 env.allowLocalModels = false;
 const globalFetch = fetch;
-// @ts-ignore
-fetch = (input, init) =>
+globalThis.fetch = (input, init) =>
   globalFetch(input, {
     ...init,
     referrerPolicy: "no-referrer",

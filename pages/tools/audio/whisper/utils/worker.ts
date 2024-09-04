@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-nocheck
 
-import { pipeline, env } from "@huggingface/transformers";
+import { pipeline, env } from "../../../../../lib/transformers/transformers.min.js";
 
 env.remoteHost = "https://hf-mirror.com";
 env.allowLocalModels = false;
