@@ -5,8 +5,10 @@ const scripts = [
   "./node_modules/@huggingface/transformers/src/backends/onnx.js",
 ];
 
-const hubScriptPath =
-  "./node_modules/.cache/vite/client/deps/@huggingface_transformers.js";
+const hubScriptPaths = [
+  "./node_modules/@huggingface/transformers/src/utils/hub.js",
+  "./node_modules/.cache/vite/client/deps/@huggingface_transformers.js",
+];
 
 function replaceFn(scriptPath, origin, replace) {
   const envScript = fs.readFileSync(scriptPath, { encoding: "utf-8" });
@@ -22,20 +24,22 @@ function replaceFn(scriptPath, origin, replace) {
 scripts.forEach((script) =>
   replaceFn(script, "https://cdn.jsdelivr.net/npm", "https://unpkg.com")
 );
-try {
-  replaceFn(
-    hubScriptPath,
-    "fetch(urlOrPath, { headers })",
-    `fetch(urlOrPath, { headers, referrerPolicy: 'no-referrer' })`
-  );
-  replaceFn(
-    hubScriptPath,
-    "fetch(urlOrPath)",
-    `fetch(urlOrPath, { referrerPolicy: 'no-referrer' })`
-  );
-  console.log(
-    "transformer.js packages cdn has replaced with https://unpkg.com"
-  );
-} catch (error) {
-  console.error(error)
-}
+hubScriptPaths.forEach((script) => {
+  try {
+    replaceFn(
+      script,
+      "fetch(urlOrPath, { headers })",
+      `fetch(urlOrPath, { headers, referrerPolicy: 'no-referrer' })`
+    );
+    replaceFn(
+      script,
+      "fetch(urlOrPath)",
+      `fetch(urlOrPath, { referrerPolicy: 'no-referrer' })`
+    );
+    console.log(
+      "transformer.js packages cdn has replaced with https://unpkg.com"
+    );
+  } catch (error) {
+    console.error(error);
+  }
+});
