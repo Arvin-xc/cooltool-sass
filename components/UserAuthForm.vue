@@ -6,24 +6,21 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "./ui/toast";
 
 const supabaeClient = useSupabaseClient();
-const isLoading = ref(false);
+const isLoading = ref<boolean>(false);
+const isSendingEmail = ref<boolean>(false);
 
 const { toast } = useToast();
-async function onSubmit(event: Event) {
-  event.preventDefault();
-  isLoading.value = true;
 
-  setTimeout(() => {
-    isLoading.value = false;
-  }, 3000);
-}
-const token = ref<string>();
-const email = ref<string>();
-const onLogin = async () => {
-  if (email.value && token.value) {
+const emailInputRef = ref<HTMLFormElement | null>(null);
+const onSubmit = async () => {
+  const emailInput = document.querySelector("#email") as HTMLInputElement;
+  const tokenInput = document.querySelector("#token") as HTMLInputElement;
+  if (emailInput.checkValidity() && tokenInput.checkValidity()) {
+    isLoading.value = true;
+
     const res = await supabaeClient.auth.verifyOtp({
-      email: email.value,
-      token: token.value,
+      email: emailInput.value,
+      token: tokenInput.value,
       type: "email",
     });
     if (res.error) {
@@ -33,41 +30,47 @@ const onLogin = async () => {
     } else {
       toast({
         title: "登录成功",
+        duration: 2000,
       });
-      navigateTo("/");
+      setTimeout(() => {
+        navigateTo("/");
+      }, 2000);
     }
-    // res.error?.message
-  } else {
-    toast({
-      title: !email.value ? "请输入邮箱！" : "请输入验证码！",
-    });
+    isLoading.value = false;
   }
 };
 const onSendEmail = async () => {
-  if (email.value) {
-    supabaeClient.auth;
-    await supabaeClient.auth
-      .signInWithOtp({
-        email: email.value,
-      })
-      .finally(() => {
-        isLoading.value = false;
-      });
-    toast({
-      title: "邮件发送成功，请前往邮箱查收登录链接！",
+  const emailInput = document.querySelector("#email") as HTMLInputElement;
+  if (emailInput?.checkValidity()) {
+    isSendingEmail.value = true;
+    const { error } = await supabaeClient.auth.signInWithOtp({
+      email: emailInput.value,
     });
+
+    if (error) {
+      toast({
+        title: error.message,
+      });
+    } else {
+      toast({
+        title: "邮件发送成功，请前往邮箱查收登录链接！",
+      });
+    }
+
+    isSendingEmail.value = false;
   }
 };
 </script>
 
 <template>
   <div :class="cn('grid gap-6', $attrs.class ?? '')">
-    <form @submit="onSubmit">
+    <form @submit="onSubmit" ref="formRef">
       <div class="grid gap-2">
         <div class="grid grid-cols-4 gap-2">
           <div class="grid col-span-3 gap-2">
             <Label class="sr-only" for="email"> 邮箱 </Label>
             <Input
+              ref="emailInputRef"
               id="email"
               placeholder="请输入邮箱"
               type="email"
@@ -76,10 +79,11 @@ const onSendEmail = async () => {
               auto-correct="off"
               required
               :disabled="isLoading"
-              v-model="email"
             />
           </div>
-          <Button :disabled="isLoading" @click="onSendEmail"> 发送邮件 </Button>
+          <Button :disabled="isSendingEmail" @click="onSendEmail">
+            发送邮件
+          </Button>
         </div>
         <div class="grid gap-2">
           <Label class="sr-only" for="email"> 验证码 </Label>
@@ -92,27 +96,10 @@ const onSendEmail = async () => {
             auto-correct="off"
             required
             :disabled="isLoading"
-            v-model="token"
           />
         </div>
-        <Button :disabled="isLoading" @click="onLogin"> 登录/注册 </Button>
+        <Button :disabled="isLoading" @click="onSubmit"> 登录/注册 </Button>
       </div>
     </form>
-    <!-- <div class="relative">
-      <div class="absolute inset-0 flex items-center">
-        <span class="w-full border-t" />
-      </div>
-      <div class="relative flex justify-center text-xs uppercase">
-        <span class="bg-background px-2 text-muted-foreground">
-          Or continue with
-        </span>
-      </div>
-    </div>
-    <Button variant="outline" type="button" :disabled="isLoading">
-      <LucideSpinner v-if="isLoading" class="mr-2 h-4 w-4 animate-spin" />
-      <GitHubLogo v-else class="mr-2 h-4 w-4" />
-      {{ isLoading }}
-      GitHub
-    </Button> -->
   </div>
 </template>
