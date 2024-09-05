@@ -25,7 +25,7 @@ const onJoinQQGroup = () => {
 <template>
   <Dialog>
     <DialogTrigger as-child>
-      <Button variant="outline">客服</Button>
+      <Button variant="outline">反馈/交流</Button>
     </DialogTrigger>
     <DialogContent class="sm:max-w-[425px]">
       <DialogHeader>

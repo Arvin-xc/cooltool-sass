@@ -17,15 +17,38 @@ async function onSubmit(event: Event) {
     isLoading.value = false;
   }, 3000);
 }
+const token = ref<string>();
 const email = ref<string>();
+const onLogin = async () => {
+  if (email.value && token.value) {
+    const res = await supabaeClient.auth.verifyOtp({
+      email: email.value,
+      token: token.value,
+      type: "email",
+    });
+    if (res.error) {
+      toast({
+        title: res.error.message,
+      });
+    } else {
+      toast({
+        title: "登录成功",
+      });
+      navigateTo("/");
+    }
+    // res.error?.message
+  } else {
+    toast({
+      title: !email.value ? "请输入邮箱！" : "请输入验证码！",
+    });
+  }
+};
 const onSendEmail = async () => {
   if (email.value) {
+    supabaeClient.auth;
     await supabaeClient.auth
       .signInWithOtp({
         email: email.value,
-        options: {
-          emailRedirectTo: location.origin,
-        },
       })
       .finally(() => {
         isLoading.value = false;
@@ -41,20 +64,38 @@ const onSendEmail = async () => {
   <div :class="cn('grid gap-6', $attrs.class ?? '')">
     <form @submit="onSubmit">
       <div class="grid gap-2">
-        <div class="grid gap-1">
-          <Label class="sr-only" for="email"> Email </Label>
+        <div class="grid grid-cols-4 gap-2">
+          <div class="grid col-span-3 gap-2">
+            <Label class="sr-only" for="email"> 邮箱 </Label>
+            <Input
+              id="email"
+              placeholder="请输入邮箱"
+              type="email"
+              auto-capitalize="none"
+              auto-complete="email"
+              auto-correct="off"
+              required
+              :disabled="isLoading"
+              v-model="email"
+            />
+          </div>
+          <Button :disabled="isLoading" @click="onSendEmail"> 发送邮件 </Button>
+        </div>
+        <div class="grid gap-2">
+          <Label class="sr-only" for="email"> 验证码 </Label>
           <Input
-            id="email"
-            placeholder="请输入邮箱"
-            type="email"
+            id="token"
+            placeholder="请输入验证码"
+            type="text"
             auto-capitalize="none"
-            auto-complete="email"
+            auto-complete="token"
             auto-correct="off"
+            required
             :disabled="isLoading"
-            v-model="email"
+            v-model="token"
           />
         </div>
-        <Button :disabled="isLoading" @click="onSendEmail"> 发送邮件 </Button>
+        <Button :disabled="isLoading" @click="onLogin"> 登录/注册 </Button>
       </div>
     </form>
     <!-- <div class="relative">

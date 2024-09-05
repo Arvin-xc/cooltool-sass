@@ -44,7 +44,7 @@ const onBack = () => {
             登录/创建酷兔账号
           </h1>
           <p class="text-sm text-muted-foreground">
-            在下方输入邮箱来登录/创建酷兔账号
+            第一次登录将自动创建酷兔账号
           </p>
         </div>
         <UserAuthForm />
