@@ -35,7 +35,11 @@ const onBack = () => {
         </blockquote>
       </div>
     </div>
+
     <div class="lg:p-8">
+      <Button @click="onBack" class="w-14 fixed left-11 top-10 hidden sm:block" size="sm" variant="ghost" c>
+        <Icon icon="mdi:arrow-back" height="auto" />
+      </Button>
       <div
         class="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]"
       >

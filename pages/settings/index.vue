@@ -95,7 +95,7 @@ const onUploadAvatar = async (e: Event) => {
 </script>
 
 <template>
-  <div>
+  <div class="p-5">
     <div>
       <h3 class="text-lg font-medium">个人设置</h3>
     </div>
