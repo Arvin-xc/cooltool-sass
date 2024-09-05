@@ -1,19 +1,15 @@
 <template>
-  <div v-if="transcribedData && !transcribedData.isBusy">
-    <div class="w-full text-right mt-4">
+  <div class="mx-8">
+    <div class="w-full text-right mt-4 flex gap-4 justify-end">
       <Button
         variant="outline"
         class="inline-flex items-center"
-        @click="exportTXT"
-      >
-        导出文本
-      </Button>
-      <Button
-        variant="outline"
-        class="inline-flex items-center ml-4"
         @click="exportJSON"
       >
-        导出为JSON文件
+        导出JSON
+      </Button>
+      <Button class="inline-flex items-center" @click="exportTXT">
+        导出文本
       </Button>
     </div>
     <div
@@ -37,8 +33,9 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import { formatAudioTimestamp } from "../utils/AudioUtils";
+import type { TranscriberData } from "../hooks/use-transcriber";
 
-const props = defineProps<{ transcribedData: any }>();
+const props = defineProps<{ transcribedData: TranscriberData }>();
 
 const divRef = ref<HTMLDivElement | null>(null);
 

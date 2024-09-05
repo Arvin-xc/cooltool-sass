@@ -5,6 +5,7 @@ const { subtitle, label, accept, percent } = defineProps<{
   subtitle: string;
   multiple?: boolean;
   percent?: number;
+  isBusy?: boolean;
   label?: string;
   accept?: string;
 }>();
@@ -107,7 +108,7 @@ defineExpose({
               <div class="text-primary">{{ percent.toFixed(2) }}%</div>
             </div>
           </div>
-          <Button @click="onClick" class="mt-4" v-else>
+          <Button @click="onClick" class="mt-4" :loading="isBusy" v-else>
             {{ label || "添加文件" }}
           </Button>
           <div class="mt-4">

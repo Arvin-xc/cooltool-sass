@@ -1,5 +1,5 @@
 import { ref, reactive } from "vue";
-import Constants from "../utils/Constants";
+import Constants, { LANGUAGES, LANGUAGES_FOR_RENDER } from "../utils/Constants";
 import { useWorker } from "./use-worker";
 
 interface ProgressItem {
@@ -12,13 +12,12 @@ interface ProgressItem {
 }
 
 interface TranscriberUpdateData {
-  data: [
-    string,
-    { chunks: { text: string; timestamp: [number, number | null] }[] }
-  ];
-  text: string;
+  data: {
+    text: string;
+    chunks: { text: string; timestamp: [number, number | null] }[];
+    tps: number;
+  };
 }
-
 interface TranscriberCompleteData {
   data: {
     text: string;
@@ -28,6 +27,7 @@ interface TranscriberCompleteData {
 
 export interface TranscriberData {
   isBusy: boolean;
+  tps?: number;
   text: string;
   chunks: { text: string; timestamp: [number, number | null] }[];
 }
@@ -37,7 +37,10 @@ export interface Transcriber {
   isBusy: boolean;
   isModelLoading: boolean;
   progressItems: ProgressItem[];
-  start: (audioData: AudioBuffer | undefined) => void;
+  start: (
+    audioData: AudioBuffer | undefined,
+    language: keyof typeof LANGUAGES
+  ) => void;
   output?: TranscriberData;
   model: string;
   setModel: (model: string) => void;
@@ -71,25 +74,18 @@ export function useTranscriber(): Transcriber {
         });
         break;
       case "update":
-        // Received partial update
-        const updateMessage = message as TranscriberUpdateData;
-        console.log('update', updateMessage)
-        transcript.value = {
-          isBusy: true,
-          text: updateMessage.data[0],
-          chunks: updateMessage.data[1].chunks,
-        };
-        break;
       case "complete":
-        // Received complete transcript
-        const completeMessage = message as TranscriberCompleteData;
+        const busy = message.status === "update";
+        const updateMessage = message as TranscriberUpdateData;
         transcript.value = {
-          isBusy: false,
-          text: completeMessage.data.text,
-          chunks: completeMessage.data.chunks,
+          isBusy: busy,
+          text: updateMessage.data.text,
+          tps: updateMessage.data.tps,
+          chunks: updateMessage.data.chunks,
         };
-        isBusy.value = false;
+        isBusy.value = busy;
         break;
+
       case "initiate":
         // Model file start load: add a new progress item to the list.
         isModelLoading.value = true;
@@ -101,7 +97,7 @@ export function useTranscriber(): Transcriber {
       case "error":
         isBusy.value = false;
         alert(
-          `${message.data.message} This is most likely because you are using Safari on an M1/M2 Mac. Please try again from Chrome, Firefox, or Edge.\n\nIf this is not the case, please file a bug report.`
+          `An error occurred: "${message.data.message}". Please file a bug report.`
         );
         break;
       case "done":
@@ -110,7 +106,9 @@ export function useTranscriber(): Transcriber {
           (item) => item.file !== message.file
         );
         break;
+
       default:
+        // initiate/download/done
         break;
     }
   });
@@ -125,7 +123,10 @@ export function useTranscriber(): Transcriber {
     transcript.value = undefined;
   };
 
-  const postRequest = async (audioData: AudioBuffer | undefined) => {
+  const postRequest = async (
+    audioData: AudioBuffer | undefined,
+    language: keyof typeof LANGUAGES
+  ) => {
     if (audioData) {
       transcript.value = undefined;
       isBusy.value = true;
@@ -152,10 +153,7 @@ export function useTranscriber(): Transcriber {
         multilingual: multilingual.value,
         quantized: quantized.value,
         subtask: multilingual.value ? subtask.value : null,
-        language:
-          multilingual.value && language.value !== "auto"
-            ? language.value
-            : null,
+        language,
       });
     }
   };
