@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { filesize } from "filesize";
 import type { RcFile } from "~/components/TablePage.vue";
+import { Matting } from "~/lib/image/matting";
 
 type TransactionData = {
   status: "progress" | "done";
@@ -14,11 +15,15 @@ definePageMeta({
   client: true,
 });
 
-const matting = ref();
+const matting = ref<Matting>();
 const percent = ref<number | undefined>(0);
 const loading = ref<boolean>(true);
 onMounted(async () => {
-  matting.value = await import("~/lib/image/matting");
+  matting.value = new Matting();
+  matting.value.loadModule();
+});
+onBeforeUnmount(async () => {
+  matting.value?.terminal();
 });
 
 const onLoadingModel = (data: TransactionData) => {
@@ -54,7 +59,10 @@ const headers = [
 ];
 const convertFn = async (file: RcFile) => {
   const newFilename = file.file.name.replace(/\.\w+$/, ".png");
-  const res = await matting.value.maskToImage(URL.createObjectURL(file.file), onLoadingModel);
+  const res = await matting.value?.maskToImage(
+    URL.createObjectURL(file.file),
+    onLoadingModel
+  );
   if (res) {
     file.response = new File([res], newFilename, { type: "image/png" });
     file.percent = 100;
@@ -74,8 +82,11 @@ onMounted(async () => {
   if (localStorage.getItem(ONNX_MODEL_NAME)) {
     percent.value = 100;
   } else {
-    matting.value.loadModule((data:TransactionData) => {
-      if (typeof data.progress === "number") {
+    await matting.value?.loadModule((data: TransactionData) => {
+      if (
+        typeof data.progress === "number" &&
+        data.progress < (percent.value || 0)
+      ) {
         percent.value = data.progress;
       }
       if (data.status === "done") {
