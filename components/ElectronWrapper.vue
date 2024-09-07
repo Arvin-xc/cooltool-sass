@@ -22,7 +22,10 @@ const page = computed(() => routes.find((item) => item.path === route.path));
           <p class="text-sm text-muted-foreground">
             此功能仅在客户端可用，请点击下方按钮下载客户端
           </p>
-          <Button @click="navigateTo('/download')" class="mt-4">
+          <Button
+            @click="navigateTo('/download', { open: { target: '_blank' } })"
+            class="mt-4"
+          >
             下载客户端
           </Button>
         </div>
