@@ -17,7 +17,7 @@ vipStore.updateVIP({
 <template>
   <div class="flex min-h-screen w-full bg-muted/40">
     <aside
-      class="inset-y-0 left-0 z-10 w-16 lg:w-40 flex-col border-r bg-background flex"
+      class="inset-y-0 left-0 w-16 lg:w-40 flex-col border-r bg-background flex"
     >
       <nav class="flex flex-col items-center px-2 py-5 border-b">
         <NuxtLink to="/">

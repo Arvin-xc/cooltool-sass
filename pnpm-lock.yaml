@@ -53,6 +53,12 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      cnchar:
+        specifier: ^3.2.6
+        version: 3.2.6
+      cnchar-draw:
+        specifier: ^3.2.6
+        version: 3.2.6
       comlink:
         specifier: ^4.4.1
         version: 4.4.1
@@ -122,6 +128,9 @@ importers:
       vue:
         specifier: ^3.4.37
         version: 3.4.37(typescript@5.5.4)
+      vuedraggable:
+        specifier: ^4.1.0
+        version: 4.1.0(vue@3.4.37(typescript@5.5.4))
       wasm-feature-detect:
         specifier: ^1.6.2
         version: 1.6.2
@@ -2399,6 +2408,15 @@ packages:
   cmd-shim@6.0.3:
     resolution: {integrity: sha512-FMabTRlc5t5zjdenF6mS0MBeFZm0XqHqeOkcskKFb/LYCcRQ5fVgLOHVc4Lq9CqABd9zhjwPjMBCJvMCziSVtA==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
+
+  cnchar-draw@3.2.6:
+    resolution: {integrity: sha512-Rlfl8XkCZIDLZ/acOTdgpQCy7H+yhEFHXZVqCJ2V8080S9ROgVHUGSXaBa7x7lvKuxwArlR70kkMEEF1Md1SPw==}
+
+  cnchar-types@3.2.6:
+    resolution: {integrity: sha512-LGU2ss7KcsI1Psme73+jffUX0ZDuChr6P9Rj2j8lynJHStklNpoC/+kheKSSUcXQ1u2KNvZt1Shs/5efcihHkg==}
+
+  cnchar@3.2.6:
+    resolution: {integrity: sha512-7Up5ALAkoOTAHlRMN0B7VgrrRsp6+trgFV0M7xSsZ0TwnnBfW68gXClcE9Oz8sTOEu+zqGOZjBhlHNzPIBckDA==}
 
   co@4.6.0:
     resolution: {integrity: sha512-QVb0dM5HvG+uaxitm8wONl7jltx8dqhfU33DcqtOZcLSVIKSDDLDi7+0LbAKiyI8hD9u42m2YxXSkMGWThaecQ==}
@@ -4846,6 +4864,9 @@ packages:
   smob@1.5.0:
     resolution: {integrity: sha512-g6T+p7QO8npa+/hNx9ohv1E5pVCmWrVCUzUXJyLdMmftX6ER0oiWY/w9knEonLpnOp6b6FenKnMfR8gqwWdwig==}
 
+  sortablejs@1.14.0:
+    resolution: {integrity: sha512-pBXvQCs5/33fdN1/39pPL0NZF20LeRbLQ5jtnheIPN9JQAaufGjKdWduZn4U7wCtVuzKhmRkI0DFYHYRbB2H1w==}
+
   source-map-js@1.2.0:
     resolution: {integrity: sha512-itJW8lvSA0TXEphiRoawsCksnlf8SyvmFzIhltqAHluXd88pkCd+cXJVHTDwdCr0IzwptSm035IHQktUu1QUMg==}
     engines: {node: '>=0.10.0'}
@@ -5544,6 +5565,11 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
+
+  vuedraggable@4.1.0:
+    resolution: {integrity: sha512-FU5HCWBmsf20GpP3eudURW3WdWTKIbEIQxh9/8GE806hydR9qZqRRxRE3RjqX7PkuLuMQG/A7n3cfj9rCEchww==}
+    peerDependencies:
+      vue: ^3.0.1
 
   wasm-feature-detect@1.6.2:
     resolution: {integrity: sha512-4dnaZ+Fq/q+BbMlTIfaNS851i+0zmHzui++NUZdskESRu3xwB6g6x2FnGvBdWtpijqO5yuj1l+EUTJGc4S4DKg==}
@@ -8422,6 +8448,16 @@ snapshots:
 
   cmd-shim@6.0.3: {}
 
+  cnchar-draw@3.2.6:
+    dependencies:
+      cnchar-types: 3.2.6
+
+  cnchar-types@3.2.6: {}
+
+  cnchar@3.2.6:
+    dependencies:
+      cnchar-types: 3.2.6
+
   co@4.6.0: {}
 
   color-convert@1.9.3:
@@ -11106,6 +11142,8 @@ snapshots:
 
   smob@1.5.0: {}
 
+  sortablejs@1.14.0: {}
+
   source-map-js@1.2.0: {}
 
   source-map-support@0.5.21:
@@ -11894,6 +11932,11 @@ snapshots:
       '@vue/shared': 3.4.37
     optionalDependencies:
       typescript: 5.5.4
+
+  vuedraggable@4.1.0(vue@3.4.37(typescript@5.5.4)):
+    dependencies:
+      sortablejs: 1.14.0
+      vue: 3.4.37(typescript@5.5.4)
 
   wasm-feature-detect@1.6.2: {}
 

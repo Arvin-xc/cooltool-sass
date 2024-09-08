@@ -27,6 +27,8 @@
     "@vueuse/core": "^10.11.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "cnchar": "^3.2.6",
+    "cnchar-draw": "^3.2.6",
     "comlink": "^4.4.1",
     "crypto-js": "^4.2.0",
     "cryptojs": "^2.5.3",
@@ -50,6 +52,7 @@
     "uuid": "^10.0.0",
     "vee-validate": "^4.13.2",
     "vue": "^3.4.37",
+    "vuedraggable": "^4.1.0",
     "wasm-feature-detect": "^1.6.2",
     "wechatpay-node-v3": "^2.2.0",
     "zod": "^3.23.8"
