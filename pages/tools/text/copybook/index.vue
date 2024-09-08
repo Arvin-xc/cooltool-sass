@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import cnchar from "cnchar";
-import Copybook from "./components/copybook.vue";
+import Copybook, { type PrintType } from "./components/copybook.vue";
 import { Icon } from "@iconify/vue";
 import Draggable from "vuedraggable";
 import { v4 as uuid } from "uuid";
@@ -15,6 +15,7 @@ const characters = ref<{ id: string; text: string }[]>([]);
 const drag = ref<boolean>(false);
 const input = ref<string>("");
 const addon = ref<string>("");
+const printType = ref<PrintType>("normal");
 
 const renderCharacters = (text: string) => {
   characters.value.push(
@@ -37,6 +38,9 @@ const onPrint = () => {
   nextTick(() => {
     window.print();
   });
+};
+const onPrintTypeChange = (checked: boolean) => {
+  printType.value = checked ? "stroke" : "normal";
 };
 onMounted(() => {
   window.addEventListener("afterprint", () => {
@@ -82,7 +86,11 @@ const showCopyBook = computed(() => characters.value.length >= 1);
             item-key="id"
           >
             <template #item="{ element }">
-              <Copybook :text="element.text" :index="element.id" />
+              <Copybook
+                :printType="printType"
+                :text="element.text"
+                :index="element.id"
+              />
             </template>
           </Draggable>
         </div>
@@ -119,6 +127,19 @@ const showCopyBook = computed(() => characters.value.length >= 1);
           class="md:w-[100px] lg:w-[300px] w-[200px]"
           v-model="input"
         />
+        <div class="my-4 flex items-center gap-2">
+          <Checkbox
+            @update:checked="onPrintTypeChange"
+            :checked="printType === 'stroke'"
+            id="printType"
+          />
+          <label
+            for="printType"
+            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            笔画练习
+          </label>
+        </div>
         <Button :disabled="!input" @click="() => renderCharacters(input)">
           生成字帖
         </Button>
