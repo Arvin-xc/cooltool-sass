@@ -74,7 +74,7 @@ const showCopyBook = computed(() => characters.value.length >= 1);
           </div>
           <Draggable
             :class="`flex flex-col gap-2 overflow-auto p-1`"
-            :style="`max-height:calc(100vh - 200px)`"
+            :style="printing ? '' : `max-height:calc(100vh - 200px)`"
             v-model="characters"
             group="people"
             @start="drag = true"
