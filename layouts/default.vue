@@ -1,17 +1,6 @@
 <script setup lang="ts">
-import Toaster from "@/components/ui/toast/Toaster.vue";
 import Nav from "~/components/Nav.vue";
-import { useVIPStore } from "~/stores/user";
 const routes = useNestedRouteTree();
-const vipStore = useVIPStore();
-
-const { data: subscription } = useFetch("/api/subscription");
-const pricingDialogStore = usePricingDialogStore();
-
-vipStore.updateVIP({
-  endDate: subscription.value?.endDate,
-  vip: !!subscription.value,
-});
 </script>
 
 <template>
@@ -53,8 +42,5 @@ vipStore.updateVIP({
         </main>
       </ElectronWrapper>
     </div>
-    <Toaster />
-
-    <PricingDialog v-if="pricingDialogStore.open" />
   </div>
 </template>
