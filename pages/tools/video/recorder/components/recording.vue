@@ -40,11 +40,10 @@ const recordingCamera = async (selectedVideoDeviceId: string) => {
   playInPictureRecorderManager.value = new MediaRecorderManager({
     displaySurface: "camera",
     recordResultType: "video",
-    devicesInfo: {
-      selectedVideoDeviceId,
-    },
   });
-  await playInPictureRecorderManager.value.startRecording();
+  await playInPictureRecorderManager.value.startRecording({
+    selectedVideoDeviceId,
+  });
   emits(
     "updatePlayInPictureSrcObject",
     playInPictureRecorderManager.value.stream

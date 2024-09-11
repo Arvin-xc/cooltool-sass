@@ -46,7 +46,7 @@ const onReset = () => {
           v-if="playInPictureSrcObject"
           :key="playInPictureSrcObject.id"
           :src-object="playInPictureSrcObject"
-          :playInPicture="true"
+          :play-in-picture="true"
         />
       </div>
       <RecordingInputs
