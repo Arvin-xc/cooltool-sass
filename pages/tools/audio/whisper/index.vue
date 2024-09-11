@@ -40,7 +40,7 @@ const onUpload = (files: File[]) => {
     subtitle="语音转文字"
     @change="onUpload"
     :accept="accept"
-    :is-busy="isLoading || transcriber.isBusy"
+    :loading="isLoading || transcriber.isBusy"
   >
     <div class="flex items-center gap-2 w-max mt-4">
       <Label for="language" class="shrink-0">音视频语言：</Label>

@@ -13,6 +13,7 @@ import { useToast } from "./ui/toast";
 
 const { accept, convertFn, percent, concurrency } = defineProps<{
   accept: string;
+  disabled?: boolean;
   concurrency?: number;
   percent?: number;
   headers: { label: string; class: string; key: string }[];
@@ -190,6 +191,7 @@ const onSaveAll = async () => {
     <Upload
       :accept="accept"
       multiple
+      :disabled="disabled"
       :percent="percent"
       ref="uploadRef"
       @change="onSelectFiles"
