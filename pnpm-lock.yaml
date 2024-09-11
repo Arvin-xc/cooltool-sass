@@ -104,6 +104,9 @@ importers:
       radix-vue:
         specifier: ^1.9.2
         version: 1.9.2(vue@3.4.37(typescript@5.5.4))
+      recordrtc:
+        specifier: ^5.6.2
+        version: 5.6.2
       seedrandom:
         specifier: ^3.0.5
         version: 3.0.5
@@ -147,6 +150,9 @@ importers:
       '@types/qrcode':
         specifier: ^1.5.5
         version: 1.5.5
+      '@types/recordrtc':
+        specifier: ^5.6.14
+        version: 5.6.14
       '@types/seedrandom':
         specifier: ^3.0.8
         version: 3.0.8
@@ -1862,6 +1868,9 @@ packages:
 
   '@types/qrcode@1.5.5':
     resolution: {integrity: sha512-CdfBi/e3Qk+3Z/fXYShipBT13OJ2fDO2Q2w5CIP5anLTLIndQG9z6P1cnm+8zCWSpm5dnxMFd/uREtb0EXuQzg==}
+
+  '@types/recordrtc@5.6.14':
+    resolution: {integrity: sha512-Reiy1sl11xP0r6w8DW3iQjc1BgXFyNC7aDuutysIjpFoqyftbQps9xPA2FoBkfVXpJM61betgYPNt+v65zvMhA==}
 
   '@types/resolve@1.20.2':
     resolution: {integrity: sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==}
@@ -4626,6 +4635,9 @@ packages:
   readdirp@3.6.0:
     resolution: {integrity: sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==}
     engines: {node: '>=8.10.0'}
+
+  recordrtc@5.6.2:
+    resolution: {integrity: sha512-1QNKKNtl7+KcwD1lyOgP3ZlbiJ1d0HtXnypUy7yq49xEERxk31PHvE9RCciDrulPCY7WJ+oz0R9hpNxgsIurGQ==}
 
   redis-errors@1.2.0:
     resolution: {integrity: sha512-1qny3OExCf0UvUV/5wpYKf2YwPcOqXzkwKKSmKHiE6ZMQs5heeE/c8eXK+PNllPvmjgAbfnsbpkGZWy8cBpn9w==}
@@ -7715,6 +7727,8 @@ snapshots:
   '@types/qrcode@1.5.5':
     dependencies:
       '@types/node': 22.1.0
+
+  '@types/recordrtc@5.6.14': {}
 
   '@types/resolve@1.20.2': {}
 
@@ -10871,6 +10885,8 @@ snapshots:
   readdirp@3.6.0:
     dependencies:
       picomatch: 2.3.1
+
+  recordrtc@5.6.2: {}
 
   redis-errors@1.2.0: {}
 
