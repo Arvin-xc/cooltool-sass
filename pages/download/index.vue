@@ -5,7 +5,6 @@ definePageMeta({
   layout: "blank",
 });
 const { toast } = useToast();
-const router = useRouter();
 
 const onDownload = (link: string) => {
   if (!link) {
