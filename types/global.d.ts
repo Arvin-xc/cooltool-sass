@@ -62,6 +62,8 @@ declare global {
         videoDeviceId: string;
         audio?: boolean;
       }) => Promise<void>;
+      getPathForFile: (file: File) => string;
+      writeFile: (file: File) => Promise<string>;
     };
   }
 }

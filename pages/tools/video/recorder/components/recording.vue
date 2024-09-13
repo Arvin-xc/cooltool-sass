@@ -5,6 +5,7 @@ import { getAudioTracksByDeviceId } from "../utils";
 import { downloadFile } from "~/lib/file";
 import { useToast } from "~/components/ui/toast";
 import ElectronMediaSelectDialog from "./electron-media-select-dialog.vue";
+import { videoConverterOptions } from "~/config/tools.video";
 
 const emits = defineEmits<{
   updateSrcObject: [srcObject?: MediaStream];
@@ -21,8 +22,8 @@ const props = defineProps<{
   recordingFile?: File;
   recording: boolean;
 }>();
-const { devicesInfo, recordingType, recordingFile } = props;
-const { recordingCountDown } = toRefs(props);
+const { recordingCountDown, recordingFile, devicesInfo, recordingType } =
+  toRefs(props);
 const electronMediaSelectDialogRef = ref<{
   onUpdateOpen: (state: boolean) => void;
 }>();
@@ -31,11 +32,12 @@ const { toast } = useToast();
 const globalStore = useGlobalStore();
 
 const maxRecordingCountDown = 99;
+const exportProgress = ref<number>(0); // 导出为mp4需要转码
 const recordingCountDownInput = ref<number>(3); // 默认倒计时3秒开始录制
 const playInPictureRecorderManager = ref<MediaRecorderManager>();
 const mainRecorderManager = ref<MediaRecorderManager>(
   new MediaRecorderManager({
-    displaySurface: recordingType,
+    displaySurface: recordingType.value,
     recordResultType: "video",
     onStopRecording: (manager) => {
       emits("updateRecordingState", false);
@@ -62,9 +64,9 @@ const recordingCamera = async (selectedVideoDeviceId: string) => {
 };
 const addAudioTracksIfNeed = async () => {
   //选择了麦克风，需要讲麦克风steam插入到录屏里
-  if (devicesInfo.selectedAudioDeviceId) {
+  if (devicesInfo.value.selectedAudioDeviceId) {
     const additionalAudioTracks = await getAudioTracksByDeviceId(
-      devicesInfo.selectedAudioDeviceId
+      devicesInfo.value.selectedAudioDeviceId
     );
     mainRecorderManager.value.addAudioTracks(additionalAudioTracks);
   }
@@ -110,11 +112,54 @@ const onPreview = async (devicesInfo?: DevicesInfo) => {
     }
   }
 };
+const onExportMP4 = async (file: File) => {
+  if (globalStore.runtime === "web") {
+    // Web暂不支持转码
+    toast({
+      title: "Web版本暂不支持导出MP4!",
+    });
+  } else {
+    const inputFilepath = await window.electronAPI?.writeFile(file);
+    const outputDir = await window.electronAPI?.getPath("desktop");
+    const newFilename = file.name.replace(/\.\w+$/, ".mp4");
+    const outputFilepath = `${outputDir}/${newFilename}`;
+    if (inputFilepath && outputDir) {
+      await window.__electron_preload__invokeFFmpeg?.({
+        input: inputFilepath,
+        inputOptions: [],
+        onFinish() {
+          toast({
+            title: "导出成功！",
+          });
+          exportProgress.value = 0;
+          window.electronAPI?.openFile(outputFilepath);
+        },
+        onError(e) {
+          toast({
+            title: "转码失败！" + e.message,
+          });
+        },
+        onProgress(progress) {
+          if (progress.percent) {
+            exportProgress.value = progress.percent;
+          }
+        },
+        outputOptions: videoConverterOptions.mp4.outputOptions,
+        output: outputFilepath,
+      });
+    } else {
+      toast({
+        title: "导出失败！",
+      });
+    }
+  }
+  // downloadFile(recordingFile);
+};
 watch(
-  () => devicesInfo.selectedVideoDeviceId,
+  () => devicesInfo.value.selectedVideoDeviceId,
   (selectedVideoDeviceId, oldSelectedVideoDeviceId) => {
     if (
-      recordingType === "screen" &&
+      recordingType.value === "screen" &&
       selectedVideoDeviceId !== oldSelectedVideoDeviceId
     ) {
       //视频输入信号更新，且已经在播放画中画则需要重新插入画中画信号
@@ -127,10 +172,10 @@ watch(
     }
 
     if (
-      recordingType === "camera" &&
+      recordingType.value === "camera" &&
       selectedVideoDeviceId !== oldSelectedVideoDeviceId
     ) {
-      onPreview(devicesInfo);
+      onPreview(devicesInfo.value);
     }
   },
   {
@@ -153,7 +198,7 @@ watch(
 );
 
 onMounted(async () => {
-  if (recordingType === "camera") return;
+  if (recordingType.value === "camera") return;
 
   if (globalStore.runtime === "electron") {
     electronMediaSelectDialogRef.value?.onUpdateOpen(true);
@@ -172,7 +217,9 @@ onBeforeUnmount(() => {
       重新开始
     </Button>
 
-    <Button @click="downloadFile(recordingFile)"> 导出MP4 </Button>
+    <Button @click="onExportMP4(recordingFile)" :loading="exportProgress > 0">
+      导出MP4
+    </Button>
     <Button variant="secondary" @click="downloadFile(recordingFile)">
       导出webm
     </Button>
