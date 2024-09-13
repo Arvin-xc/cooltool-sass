@@ -117,8 +117,10 @@ const onExportMP4 = async (file: File) => {
     // Web暂不支持转码
     toast({
       title: "Web版本暂不支持导出MP4!",
+      description: "您可先导出为webm，然后下载客户端转换视频格式为MP4",
     });
   } else {
+    exportProgress.value = 1;
     const inputFilepath = await window.electronAPI?.writeFile(file);
     const outputDir = await window.electronAPI?.getPath("desktop");
     const newFilename = file.name.replace(/\.\w+$/, ".mp4");
@@ -217,12 +219,14 @@ onBeforeUnmount(() => {
       重新开始
     </Button>
 
-    <Button @click="onExportMP4(recordingFile)" :loading="exportProgress > 0">
+    <Button
+      variant="secondary"
+      @click="onExportMP4(recordingFile)"
+      :loading="exportProgress > 0"
+    >
       导出MP4
     </Button>
-    <Button variant="secondary" @click="downloadFile(recordingFile)">
-      导出webm
-    </Button>
+    <Button @click="downloadFile(recordingFile)"> 导出webm </Button>
   </div>
   <div class="flex flex-col gap-2" v-else>
     <div
