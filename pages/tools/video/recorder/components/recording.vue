@@ -4,30 +4,41 @@ import type { DevicesInfo, DisplaySurfaceType } from "~/lib/video/recorder.d";
 import { getAudioTracksByDeviceId } from "../utils";
 import { downloadFile } from "~/lib/file";
 import { useToast } from "~/components/ui/toast";
+import ElectronMediaSelectDialog from "./electron-media-select-dialog.vue";
 
 const emits = defineEmits<{
   updateSrcObject: [srcObject?: MediaStream];
   updatePlayInPictureSrcObject: [srcObject?: MediaStream];
   updateRecordingFile: [recording: File];
+  updateRecordingState: [state: boolean];
+  updateRecordingCountdown: [value: number];
   reset: [];
 }>();
-const { devicesInfo, recordingType, recordingFile } = defineProps<{
+const props = defineProps<{
   devicesInfo: DevicesInfo;
+  recordingCountDown: number;
   recordingType: DisplaySurfaceType;
   recordingFile?: File;
+  recording: boolean;
+}>();
+const { devicesInfo, recordingType, recordingFile } = props;
+const { recordingCountDown } = toRefs(props);
+const electronMediaSelectDialogRef = ref<{
+  onUpdateOpen: (state: boolean) => void;
 }>();
 
 const { toast } = useToast();
-const recording = ref<boolean>(false);
+const globalStore = useGlobalStore();
+
 const maxRecordingCountDown = 99;
-const recordingCountDown = ref<number>(3); // 默认倒计时3秒开始录制
+const recordingCountDownInput = ref<number>(3); // 默认倒计时3秒开始录制
 const playInPictureRecorderManager = ref<MediaRecorderManager>();
 const mainRecorderManager = ref<MediaRecorderManager>(
   new MediaRecorderManager({
     displaySurface: recordingType,
     recordResultType: "video",
     onStopRecording: (manager) => {
-      recording.value = false;
+      emits("updateRecordingState", false);
       if (manager.output?.video) {
         emits("updateRecordingFile", manager.output.video);
       }
@@ -58,18 +69,21 @@ const addAudioTracksIfNeed = async () => {
     mainRecorderManager.value.addAudioTracks(additionalAudioTracks);
   }
 };
+const recordingAfterCountingDown = () => {
+  emits("updateRecordingCountdown", recordingCountDownInput.value);
+};
+
 const onStart = async () => {
   await addAudioTracksIfNeed();
 
   // 清除开始前的录制数据
   mainRecorderManager.value.resetRecording();
+  recordingAfterCountingDown();
   // 恢复录制
-  mainRecorderManager.value.resumeRecording();
-  recording.value = true;
 };
 
 const onStop = async (saveRecording?: boolean) => {
-  recording.value = false;
+  emits("updateRecordingState", false);
 
   const res = await mainRecorderManager.value.stopRecording();
   if (playInPictureRecorderManager.value) {
@@ -100,7 +114,7 @@ watch(
   () => devicesInfo.selectedVideoDeviceId,
   (selectedVideoDeviceId, oldSelectedVideoDeviceId) => {
     if (
-      recordingType === "monitor" &&
+      recordingType === "screen" &&
       selectedVideoDeviceId !== oldSelectedVideoDeviceId
     ) {
       //视频输入信号更新，且已经在播放画中画则需要重新插入画中画信号
@@ -118,11 +132,32 @@ watch(
     ) {
       onPreview(devicesInfo);
     }
+  },
+  {
+    immediate: true,
+  }
+);
+
+watch(
+  () => recordingCountDown.value,
+  (value) => {
+    if (value === 0) {
+      mainRecorderManager.value.resumeRecording();
+      emits("updateRecordingState", true);
+    } else if (value > 0) {
+      setTimeout(() => {
+        emits("updateRecordingCountdown", value - 1);
+      }, 1000);
+    }
   }
 );
 
 onMounted(async () => {
-  if (recordingType !== "camera") {
+  if (recordingType === "camera") return;
+
+  if (globalStore.runtime === "electron") {
+    electronMediaSelectDialogRef.value?.onUpdateOpen(true);
+  } else {
     onPreview();
   }
 });
@@ -143,11 +178,14 @@ onBeforeUnmount(() => {
     </Button>
   </div>
   <div class="flex flex-col gap-2" v-else>
-    <div class="flex items-center justify-center gap-4 flex-1">
+    <div
+      class="flex items-center justify-center gap-4 flex-1"
+      v-if="!recording"
+    >
       <Label class="shrink-0">录制倒计时：</Label>
       <Input
         class="w-20"
-        v-model="recordingCountDown"
+        v-model="recordingCountDownInput"
         type="number"
         min="0"
         :max="maxRecordingCountDown"
@@ -161,4 +199,10 @@ onBeforeUnmount(() => {
       </Button>
     </div>
   </div>
+  <ElectronMediaSelectDialog
+    :type="recordingType"
+    @select="onPreview()"
+    @cancel="$emit('reset')"
+    ref="electronMediaSelectDialogRef"
+  />
 </template>

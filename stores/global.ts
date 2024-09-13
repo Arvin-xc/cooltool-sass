@@ -1,9 +1,18 @@
 import { defineStore } from "pinia";
 
+type Runtime = "electron" | "web";
 export const useGlobalStore = defineStore("globalStore", {
-  state: () => {
-    return {};
+  state: (): {
+    runtime: Runtime | "";
+  } => {
+    return {
+      runtime: "",
+    };
   },
 
-  actions: {},
+  actions: {
+    updateRuntime(runtime: Runtime) {
+      this.runtime = runtime;
+    },
+  },
 });

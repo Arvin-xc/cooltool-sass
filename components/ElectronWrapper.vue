@@ -7,6 +7,8 @@ const router = useRouter();
 const routes = router.getRoutes();
 const route = useRoute();
 const page = computed(() => routes.find((item) => item.path === route.path));
+const globalStore = useGlobalStore();
+globalStore.updateRuntime(isElectron.value ? "electron" : "web");
 </script>
 <template>
   <div class="h-full" v-if="!isElectron && page?.meta.electron">

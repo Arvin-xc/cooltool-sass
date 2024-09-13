@@ -143,7 +143,10 @@ export class MediaRecorderManager {
 
   private createScreenRecordingStream(): Promise<MediaStream> {
     return navigator.mediaDevices.getDisplayMedia({
-      video: { displaySurface: this.displaySurface },
+      video: {
+        displaySurface:
+          this.displaySurface == "screen" ? "monitor" : this.displaySurface,
+      },
       audio: !!this.includeScreenAudio,
     });
   }

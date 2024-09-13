@@ -1,5 +1,5 @@
 export type RecordResultType = "audio" | "video" | "gif" | "canvas";
-export type DisplaySurfaceType = "window" | "monitor" | "browser" | "camera";
+export type DisplaySurfaceType = "window" | "screen" | "browser" | "camera";
 export type RecordingType = "screen" | "camera";
 export type DevicesInfo = {
   selectedAudioDeviceId?: string;

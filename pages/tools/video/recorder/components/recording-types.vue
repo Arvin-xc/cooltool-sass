@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { DevicesInfo, DisplaySurfaceType } from "~/lib/video/recorder.d";
 
-const isElectron = useRoute().meta.electron;
+const globalStore = useGlobalStore();
 const normalTypes = [
   {
     label: "整个屏幕",
-    key: "monitor",
+    key: "screen",
     icon: defineAsyncComponent(() => import("~/components/icons/Monitor.vue")),
   },
   {
@@ -27,7 +27,9 @@ const webTypes = [
   },
 ];
 const types = computed(() =>
-  isElectron ? normalTypes : normalTypes.concat(webTypes)
+  globalStore.runtime === "electron"
+    ? normalTypes
+    : normalTypes.concat(webTypes)
 );
 
 const emits = defineEmits<{
@@ -40,13 +42,13 @@ defineProps<{
 }>();
 </script>
 <template>
-  <div class="w-full flex-wrap flex justify-between mt-8">
+  <div class="flex-wrap flex justify-between gap-6 mt-8">
     <div
       v-for="item in types"
       :key="item.key"
-      :class="`w-[200px] h-[160px] ${
+      :class="`w-[150px] sm:w-[200px] h-[160px] ${
         item.key === selectedRecordingType ? 'text-primary border-primary' : ''
-      } text-center  cursor-pointer hover:text-primary border rounded-lg flex flex-col justify-center mb-4 mx-4`"
+      } text-center  cursor-pointer hover:text-primary border rounded-lg flex flex-col justify-center mb-4 mx-2`"
       @click="$emit('select', item.key as DisplaySurfaceType)"
     >
       <component :is="item.icon" :size="60" :key="item.key" class="mx-auto" />

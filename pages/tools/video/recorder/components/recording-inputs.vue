@@ -9,6 +9,7 @@ const emits = defineEmits<{
 }>();
 const { devicesInfo, selectedRecordingType } = defineProps<{
   devicesInfo: DevicesInfo;
+  recording: boolean;
   selectedRecordingType?: DisplaySurfaceType;
 }>();
 
@@ -95,6 +96,7 @@ onMounted(async () => {
     <div class="flex items-center justify-center gap-2">
       <Label for="audioInput" class="shrink-0">麦克风：</Label>
       <Select
+        :disabled="recording"
         @update:open="(open) => open && onRequestDevices()"
         @update:model-value="(deviceId:string) => $emit('select:audio', deviceId)"
       >
@@ -116,7 +118,7 @@ onMounted(async () => {
       class="flex items-center gap-2"
       v-if="
         selectedRecordingType &&
-        ['monitor', 'camera'].includes(selectedRecordingType)
+        ['screen', 'camera'].includes(selectedRecordingType)
       "
     >
       <Label for="videoInput" class="shrink-0">摄像头：</Label>
@@ -125,7 +127,7 @@ onMounted(async () => {
         @update:model-value="(deviceId:string) => $emit('select:video', deviceId)"
       >
         <SelectTrigger id="videoInput">
-          {{ selectedVideoInputDevice?.label || "请选择麦克风" }}
+          {{ selectedVideoInputDevice?.label || "请选择摄像头" }}
         </SelectTrigger>
         <SelectContent>
           <SelectItem
