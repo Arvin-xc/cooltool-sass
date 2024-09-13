@@ -15,7 +15,7 @@ definePageMeta({
 
 const accept = "video/*";
 const targetVideoFormat = ref<VideoFormat>("mp4");
-
+const globalStore = useGlobalStore();
 const convertFn = async (newFile: RcFile, outputDir: string) => {
   const today = dayjs().format("YYYY-MM-DD_HH-mm-ss");
   const newFilename = newFile.file.name.replace(
@@ -24,35 +24,41 @@ const convertFn = async (newFile: RcFile, outputDir: string) => {
   );
   const outputPath = `${outputDir}/${today}_${newFilename}`;
 
-  await new Promise((resolve, reject) => {
-    window.__electron_preload__invokeFFmpeg?.({
-      // @ts-ignore electron内存在file.path，浏览器内使用URL.createObjectURL
-      input: newFile.file.path || URL.createObjectURL(newFile.file),
-      inputOptions: [],
-      outputOptions:
-        videoConverterOptions[targetVideoFormat.value].outputOptions,
-      output: outputPath,
-      onFinish() {
-        newFile.percent = 100;
-        newFile.response = outputPath;
-        newFile.variant = "success";
-        resolve(true);
-      },
-      onError(err) {
-        console.error(err);
-        newFile.variant = "error";
-        reject(err);
-      },
-      onProgress(progress) {
-        console.log("processing", progress);
-        newFile.timemark = progress.timemark;
-        newFile.percent =
-          progress.percent && progress.percent > 0
-            ? Math.min(progress.percent, 99) // onProgress 100%时还有一小会儿才会回调onFinish。因此强制最多99%，在onFinish里再更新为100%
-            : 0;
-      },
+  const inputFilepath =
+    globalStore.runtime === "electron"
+      ? window.electronAPI?.getPathForFile(newFile.file)
+      : URL.createObjectURL(newFile.file);
+
+  if (inputFilepath) {
+    await new Promise((resolve, reject) => {
+      window.__electron_preload__invokeFFmpeg?.({
+        input: inputFilepath,
+        inputOptions: [],
+        outputOptions:
+          videoConverterOptions[targetVideoFormat.value].outputOptions,
+        output: outputPath,
+        onFinish() {
+          newFile.percent = 100;
+          newFile.response = outputPath;
+          newFile.variant = "success";
+          resolve(true);
+        },
+        onError(err) {
+          console.error(err);
+          newFile.variant = "error";
+          reject(err);
+        },
+        onProgress(progress) {
+          console.log("processing", progress);
+          newFile.timemark = progress.timemark;
+          newFile.percent =
+            progress.percent && progress.percent > 0
+              ? Math.min(progress.percent, 99) // onProgress 100%时还有一小会儿才会回调onFinish。因此强制最多99%，在onFinish里再更新为100%
+              : 0;
+        },
+      });
     });
-  });
+  }
   return newFile;
 };
 const headers = [
