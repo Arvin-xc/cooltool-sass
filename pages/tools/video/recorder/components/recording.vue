@@ -62,22 +62,18 @@ const recordingCamera = async (selectedVideoDeviceId: string) => {
     playInPictureRecorderManager.value.stream
   );
 };
-const addAudioTracksIfNeed = async () => {
+const updateAudioTracks = async () => {
   //选择了麦克风，需要讲麦克风steam插入到录屏里
-  if (devicesInfo.value.selectedAudioDeviceId) {
-    const additionalAudioTracks = await getAudioTracksByDeviceId(
-      devicesInfo.value.selectedAudioDeviceId
-    );
-    mainRecorderManager.value.addAudioTracks(additionalAudioTracks);
-  }
+  const additionalAudioTracks = await getAudioTracksByDeviceId(
+    devicesInfo.value.selectedAudioDeviceId
+  );
+  mainRecorderManager.value.updateAudioTracks(additionalAudioTracks);
 };
 const recordingAfterCountingDown = () => {
   emits("updateRecordingCountdown", recordingCountDownInput.value);
 };
 
 const onStart = async () => {
-  await addAudioTracksIfNeed();
-
   // 清除开始前的录制数据
   mainRecorderManager.value.resetRecording();
   recordingAfterCountingDown();
@@ -184,6 +180,7 @@ watch(
     immediate: true,
   }
 );
+watch(() => devicesInfo.value.selectedAudioDeviceId, updateAudioTracks);
 
 watch(
   () => recordingCountDown.value,

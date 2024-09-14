@@ -10,7 +10,7 @@ import fixWebmDuration from "webm-duration-fix";
 export class MediaRecorderManager {
   private displaySurface: DisplaySurfaceType;
   public output?: Output;
-  private independentAudioTracks?: boolean;
+  private additionalAudioTracks: MediaStreamTrack[] = [];
   private recordResultType: RecordRTC.Options["type"];
   private includeScreenAudio?: boolean;
   public stream?: MediaStream;
@@ -24,12 +24,10 @@ export class MediaRecorderManager {
     displaySurface,
     recordResultType,
     includeScreenAudio,
-    independentAudioTracks,
     onStopRecording,
   }: {
     displaySurface: DisplaySurfaceType;
     recordResultType: RecordRTC.Options["type"];
-    independentAudioTracks?: boolean;
     includeScreenAudio?: boolean;
     devicesInfo?: DevicesInfo;
     onStopRecording?: (manager: MediaRecorderManager) => void;
@@ -39,15 +37,22 @@ export class MediaRecorderManager {
     this.recordResultType = recordResultType;
     this.mimeType = mimeType || "video/webm";
     this.includeScreenAudio = includeScreenAudio;
-    this.independentAudioTracks = independentAudioTracks;
     this.onStopRecording = onStopRecording;
     RecordRTC.DiskStorage.init();
   }
 
-  public addAudioTracks(additionalAudioTracks: MediaStreamTrack[]) {
-    additionalAudioTracks.forEach((track) => {
-      this.stream?.addTrack(track);
+  public updateAudioTracks(additionalAudioTracks: MediaStreamTrack[]) {
+    // 移除已存在的音轨
+    this.additionalAudioTracks.forEach((track) => {
+      this.stream?.removeTrack(track);
     });
+
+    if (additionalAudioTracks.length) {
+      this.additionalAudioTracks = additionalAudioTracks;
+      additionalAudioTracks.forEach((track) => {
+        this.stream?.addTrack(track);
+      });
+    }
   }
   public async startRecording(devicesInfo?: DevicesInfo) {
     let stream: MediaStream | undefined = undefined;

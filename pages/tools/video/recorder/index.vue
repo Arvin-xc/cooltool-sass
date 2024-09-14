@@ -60,6 +60,7 @@ const onReset = () => {
               :key="previewSrcObject.id"
               :src-object="previewSrcObject"
             />
+            <!-- 画中画独立预览窗口 -->
             <Preview
               v-if="playInPictureSrcObject"
               :key="playInPictureSrcObject.id"
