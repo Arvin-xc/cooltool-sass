@@ -85,7 +85,7 @@ onMounted(async () => {
     await matting.value?.loadModule((data: TransactionData) => {
       if (
         typeof data.progress === "number" &&
-        data.progress < (percent.value || 0)
+        data.progress > (percent.value || 0)
       ) {
         percent.value = data.progress;
       }
