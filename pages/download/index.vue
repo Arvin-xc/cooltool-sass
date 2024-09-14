@@ -23,7 +23,7 @@ const apps = [
     buttons: [
       {
         label: "免费下载(ARM)",
-        link: "https://cooltool-1303253488.cos.ap-shanghai.myqcloud.com/CoolTool-0.0.4-arm.dmg",
+        link: "https://cooltool-1303253488.cos.ap-shanghai.myqcloud.com/CoolTool-0.0.4-arm64.dmg",
       },
       {
         label: "免费下载(x64)",
