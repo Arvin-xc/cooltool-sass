@@ -1,15 +1,18 @@
 <script setup lang="ts">
+import { useToast } from "~/components/ui/toast";
 import Transcript from "./components/transcript.vue";
 import { useTranscriber } from "./hooks/use-transcriber";
 import Constants, { LANGUAGES, LANGUAGES_FOR_RENDER } from "./utils/Constants";
 
 definePageMeta({
-  name: "文本提取",
+  name: "音视频转文字",
 });
 const accept = "audio/*";
 const transcriber = useTranscriber();
 const language = ref<keyof typeof LANGUAGES>("zh");
 const isLoading = ref<boolean>(false);
+const { toast } = useToast();
+
 const onUpload = (files: File[]) => {
   isLoading.value = true;
   const file = files[0];
@@ -21,10 +24,20 @@ const onUpload = (files: File[]) => {
     const audioCTX = new AudioContext({
       sampleRate: Constants.SAMPLING_RATE,
     });
-    const decoded = await audioCTX.decodeAudioData(arrayBuffer);
-    transcriber.onInputChange();
-    transcriber.start(decoded, language.value);
-    isLoading.value = false;
+    try {
+      const decoded = await audioCTX.decodeAudioData(arrayBuffer);
+      transcriber.onInputChange();
+      transcriber.start(decoded, language.value);
+    } catch (error: any) {
+      toast({
+        title: "转换失败！",
+        description: error?.message,
+        variant: "destructive",
+      });
+      console.error(error);
+    } finally {
+      isLoading.value = false;
+    }
   };
   reader.readAsArrayBuffer(file);
 };
@@ -37,9 +50,11 @@ const onUpload = (files: File[]) => {
   />
   <Upload
     v-else
-    subtitle="语音转文字"
+    subtitle="识别音视频中的语音，并转为文字。"
     @change="onUpload"
     :accept="accept"
+    :percent="transcriber.progressItems[0]?.progress"
+    :percentTip="`加载${transcriber.progressItems[0]?.name}中...`"
     :loading="isLoading || transcriber.isBusy"
   >
     <div class="flex items-center gap-2 w-max mt-4">

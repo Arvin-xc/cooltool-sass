@@ -5,6 +5,7 @@ const { subtitle, label, accept, percent } = defineProps<{
   subtitle: string;
   multiple?: boolean;
   percent?: number;
+  percentTip?: string;
   loading?: boolean;
   disabled?: boolean;
   label?: string;
@@ -103,11 +104,14 @@ defineExpose({
           >
             <Progress :model-value="percent" />
             <div class="flex gap-2 items-center justify-center mt-2">
-              <div class="text-sm text-muted-foreground">
-                加载必要文件中，请稍等...
+              <div class="text-sm text-muted-foreground leading-[24px]">
+                <p>{{ percentTip ?? "加载必要文件中！" }}</p>
               </div>
               <div class="text-primary">{{ percent.toFixed(2) }}%</div>
             </div>
+            <p class="text-sm text-muted-foreground leading-[24px]">
+              首次使用会下载必要依赖，请稍等...
+            </p>
           </div>
           <Button
             @click="onClick"
