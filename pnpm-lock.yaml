@@ -125,6 +125,9 @@ importers:
       wasm-feature-detect:
         specifier: ^1.6.2
         version: 1.6.2
+      webm-duration-fix:
+        specifier: ^1.0.4
+        version: 1.0.4
       wechatpay-node-v3:
         specifier: ^2.2.0
         version: 2.2.0
@@ -2839,6 +2842,9 @@ packages:
   eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
 
+  ebml-block@1.1.2:
+    resolution: {integrity: sha512-HgNlIsRFP6D9VKU5atCeHRJY7XkJP8bOe8yEhd8NB7B3b4++VWTyauz6g650iiPmLfPLGlVpoJmGSgMfXDYusg==}
+
   ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
 
@@ -3389,6 +3395,10 @@ packages:
   ini@4.1.1:
     resolution: {integrity: sha512-QQnnxNyfvmHFIsj7gkPcYymR8Jdw/o7mp5ZFihxn6h8Ci6fh3Dx4E1gPjpQEpIuPo9XVNY/ZUwh4BPMjGyL01g==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
+
+  int64-buffer@1.0.1:
+    resolution: {integrity: sha512-+3azY4pXrjAupJHU1V9uGERWlhoqNswJNji6aD/02xac7oxol508AsMC5lxKhEqyZeDFy3enq5OGWXF4u75hiw==}
+    engines: {node: '>= 4.5.0'}
 
   internal-slot@1.0.7:
     resolution: {integrity: sha512-NGnrKwXzSms2qUUih/ILZ5JBqNTSa1+ZmP6flaIp6KmSElgE9qdndzS3cqjrDovwFdmwsGsLdeFgB6suw+1e9g==}
@@ -5575,6 +5585,9 @@ packages:
 
   webidl-conversions@4.0.2:
     resolution: {integrity: sha512-YQ+BmxuTgd6UXZW3+ICGfyqRyHXVlD5GtQr5+qjiNW7bF0cqrzX500HVXPBOvgXb5YnzDd+h0zqyv61KUD7+Sg==}
+
+  webm-duration-fix@1.0.4:
+    resolution: {integrity: sha512-kvhmSmEnuohtK+j+mJswqCCM2ViKb9W8Ch0oAxcaeUvpok5CsMORQLnea+CYKDXPG6JH12H0CbRK85qhfeZLew==}
 
   webpack-sources@3.2.3:
     resolution: {integrity: sha512-/DyMEOrDgLKKIG0fmvtz+4dUX/3Ghozwgm6iPp8KRhvn+eQf9+Q7GWxVNMk3+uCPWfdXYC4ExGBckIXdFEfH1w==}
@@ -8805,6 +8818,8 @@ snapshots:
 
   eastasianwidth@0.2.0: {}
 
+  ebml-block@1.1.2: {}
+
   ee-first@1.1.1: {}
 
   ejs@3.1.10:
@@ -9496,6 +9511,8 @@ snapshots:
   ini@2.0.0: {}
 
   ini@4.1.1: {}
+
+  int64-buffer@1.0.1: {}
 
   internal-slot@1.0.7:
     dependencies:
@@ -11930,6 +11947,13 @@ snapshots:
   webidl-conversions@3.0.1: {}
 
   webidl-conversions@4.0.2: {}
+
+  webm-duration-fix@1.0.4:
+    dependencies:
+      buffer: 6.0.3
+      ebml-block: 1.1.2
+      events: 3.3.0
+      int64-buffer: 1.0.1
 
   webpack-sources@3.2.3: {}
 

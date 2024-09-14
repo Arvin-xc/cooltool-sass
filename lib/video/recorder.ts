@@ -5,6 +5,7 @@ import {
   type Output,
 } from "./recorder.d";
 import RecordRTC from "recordrtc";
+import fixWebmDuration from "webm-duration-fix";
 
 export class MediaRecorderManager {
   private displaySurface: DisplaySurfaceType;
@@ -74,8 +75,8 @@ export class MediaRecorderManager {
       (
         stream.getVideoTracks()[0] || stream.getAudioTracks()[0]
       ).addEventListener("ended", () => {
-        recordRTC.stopRecording(function () {
-          const output = self.getFormattedRecord();
+        recordRTC.stopRecording(async function () {
+          const output = await self.getFormattedRecord();
           self.output = output;
           self.onStopRecording?.(self);
           return output;
@@ -96,8 +97,8 @@ export class MediaRecorderManager {
   }> {
     this.stream?.getTracks().forEach((track) => track.stop());
     return new Promise((resolve) => {
-      this.recordRTC?.stopRecording(() => {
-        const output = this.getFormattedRecord();
+      this.recordRTC?.stopRecording(async () => {
+        const output = await this.getFormattedRecord();
         this.output = output;
         RecordRTC.DiskStorage.Store({
           videoBlob: output.video,
@@ -111,16 +112,18 @@ export class MediaRecorderManager {
     return this.recordURL;
   }
 
-  private getFormattedRecord() {
+  private async getFormattedRecord() {
     const dateString = new Date(new Date().getTime() + 8 * 60 * 60 * 1000)
       .toISOString()
       .replace("T", "_")
       .replace(/\.\d+Z$/, "");
     const basicFilename = `www.cooltool.app录屏_${dateString}`;
-    const blob = this.recordRTC?.getBlob()!;
-    const video = new File([blob], `${basicFilename}.webm`, {
+    const blob = this.recordRTC!.getBlob();
+    const fixBlob = await fixWebmDuration(blob);
+    const video = new File([fixBlob], `${basicFilename}.webm`, {
       type: "video/webm",
     });
+
     RecordRTC.DiskStorage.Store({
       videoBlob: video,
     });

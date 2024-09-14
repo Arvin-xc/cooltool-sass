@@ -51,14 +51,13 @@
     "vue": "^3.4.37",
     "vuedraggable": "^4.1.0",
     "wasm-feature-detect": "^1.6.2",
+    "webm-duration-fix": "^1.0.4",
     "wechatpay-node-v3": "^2.2.0",
     "zod": "^3.23.8"
   },
   "packageManager": "pnpm@9.0.5",
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.12.1",
-    "tailwind-merge": "^2.4.0",
-    "tailwindcss-animate": "^1.0.7",
     "@types/qrcode": "^1.5.5",
     "@types/recordrtc": "^5.6.14",
     "@types/seedrandom": "^3.0.8",
@@ -67,6 +66,8 @@
     "prisma": "^5.18.0",
     "prisma-dbml-generator": "^0.12.0",
     "supabase": "^1.187.10",
+    "tailwind-merge": "^2.4.0",
+    "tailwindcss-animate": "^1.0.7",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4"
   }

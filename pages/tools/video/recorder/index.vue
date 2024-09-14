@@ -7,7 +7,6 @@ import RecordingTypes from "./components/recording-types.vue";
 import RecordingInputs from "./components/recording-inputs.vue";
 import Preview from "./components/preview.vue";
 import RecordingResult from "./components/recording-result.vue";
-import ElectronMediaSelectDialog from "./components/electron-media-select-dialog.vue";
 import CountdownMask from "./components/countdown-mask.vue";
 
 const Recording = defineAsyncComponent(
