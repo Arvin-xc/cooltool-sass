@@ -10,7 +10,7 @@ import fixWebmDuration from "webm-duration-fix";
 export class MediaRecorderManager {
   private displaySurface: DisplaySurfaceType;
   public output?: Output;
-  private additionalAudioTracks: MediaStreamTrack[] = [];
+  public additionalAudioTracks: MediaStreamTrack[] = [];
   private recordResultType: RecordRTC.Options["type"];
   private includeScreenAudio?: boolean;
   public stream?: MediaStream;
@@ -43,16 +43,19 @@ export class MediaRecorderManager {
 
   public updateAudioTracks(additionalAudioTracks: MediaStreamTrack[]) {
     // 移除已存在的音轨
+    this.recordRTC?.reset();
     this.additionalAudioTracks.forEach((track) => {
+      track.stop();
       this.stream?.removeTrack(track);
     });
 
     if (additionalAudioTracks.length) {
-      this.additionalAudioTracks = additionalAudioTracks;
       additionalAudioTracks.forEach((track) => {
         this.stream?.addTrack(track);
       });
+      this.additionalAudioTracks = additionalAudioTracks;
     }
+    this.recordRTC?.resumeRecording();
   }
   public async startRecording(devicesInfo?: DevicesInfo) {
     let stream: MediaStream | undefined = undefined;
@@ -101,6 +104,9 @@ export class MediaRecorderManager {
     video: File;
   }> {
     this.stream?.getTracks().forEach((track) => track.stop());
+    this.additionalAudioTracks.forEach((track) => {
+      track.stop();
+    });
     return new Promise((resolve) => {
       this.recordRTC?.stopRecording(async () => {
         const output = await this.getFormattedRecord();
