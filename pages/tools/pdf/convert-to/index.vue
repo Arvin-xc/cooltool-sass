@@ -4,7 +4,7 @@ import type { RcFile } from "~/components/TablePage.vue";
 import { getFilenameFromHeader } from "~/lib/pdf";
 
 definePageMeta({
-  name: "从PDF转换",
+  name: "转为PDF",
 });
 const accept = "*/*";
 const headers = [
