@@ -57,11 +57,13 @@ const onReset = () => {
               :recordingCountDown="recordingCountDown"
             />
             <Preview
+              :recording="recording"
               :key="previewSrcObject.id"
               :src-object="previewSrcObject"
             />
             <!-- 画中画独立预览窗口 -->
             <Preview
+              :recording="recording"
               v-if="playInPictureSrcObject"
               :key="playInPictureSrcObject.id"
               :src-object="playInPictureSrcObject"
