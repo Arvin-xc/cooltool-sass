@@ -10,12 +10,16 @@ import pLimit from "p-limit";
 import type { ProgressVariants } from "~/components/ui/progress";
 import { downloadFiles } from "~/lib/file";
 import { useToast } from "./ui/toast";
+import type { string } from "zod";
 
 const { accept, convertFn, percent, concurrency } = defineProps<{
   accept: string;
   disabled?: boolean;
   concurrency?: number;
+  multiple?: boolean;
   percent?: number;
+  label?: string;
+  subtitle?: string;
   headers: { label: string; class: string; key: string }[];
   buttons?: { add: string };
   convertFn: (file: RcFile, outputDir: string) => Promise<RcFile>;
@@ -97,7 +101,10 @@ const onSaveAll = async () => {
 </script>
 <template>
   <div class="h-full bg-white p-6">
-    <h2 class="font-bold">{{ $route.name?.toString() }}</h2>
+    <h2 class="font-bold text-lg flex items-center gap-2">
+      {{ $route.name?.toString() }}
+      <Badge variant="tertiary" v-if="$route.meta.freeForever">永久免费</Badge>
+    </h2>
     <template v-if="tableList.length">
       <div class="flex items-center justify-between mt-4">
         <div class="flex justify-end gap-4">
@@ -190,13 +197,13 @@ const onSaveAll = async () => {
     </template>
     <Upload
       :accept="accept"
-      multiple
+      :multiple="multiple"
       :disabled="disabled"
       :percent="percent"
       ref="uploadRef"
       @change="onSelectFiles"
-      label="选择文件"
-      subtitle="拖入、粘贴或点击下方按钮添加文件"
+      :label="label || '选择文件'"
+      :subtitle="subtitle || '拖入、粘贴或点击下方按钮添加文件'"
       :hidden="tableList.length"
     >
       <slot />

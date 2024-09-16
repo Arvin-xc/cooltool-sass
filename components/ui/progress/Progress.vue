@@ -34,33 +34,34 @@ const indeterminate = computed(
 </script>
 
 <template>
-  <div class="flex items-center gap-1 items-center relative">
+  <div class="flex items-center gap-2 items-center relative ">
     <ProgressRoot
       v-bind="delegatedProps"
       :class="
         cn(
-          'relative h-4 w-full overflow-hidden rounded-full bg-secondary',
+          'relative h-6 w-full overflow-hidden rounded-full bg-secondary',
           props.class
         )
       "
     >
-      <ProgressIndicator
-        :class="
-          cn(
-            progressVariants({ variant }),
-            'h-full flex-1 transition-all relative',
-            indeterminate ? 'indeterminate-progress' : 'w-full'
-          )
-        "
-        v-if="!indeterminate"
-        :style="`transform: translateX(-${100 - (props.modelValue ?? 0)}%);`"
-      />
+      <template v-if="!indeterminate">
+        <ProgressIndicator
+          :class="
+            cn(
+              progressVariants({ variant }),
+              'h-full flex-1 transition-all relative',
+              indeterminate ? 'indeterminate-progress' : 'w-full'
+            )
+          "
+          :style="`transform: translateX(-${100 - (props.modelValue ?? 0)}%);`"
+        />
+      </template>
       <ProgressIndicator
         v-if="indeterminate"
         class="h-full w-full flex-1 indeterminate-progress"
       />
     </ProgressRoot>
-    <div v-if="label && !indeterminate">
+    <div v-if="label && !indeterminate" class="text-primary font-bold">
       {{ Math.ceil(props.modelValue || 0) }}%
     </div>
   </div>
