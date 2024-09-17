@@ -53,6 +53,7 @@
     "vue": "^3.4.37",
     "vuedraggable": "^4.1.0",
     "wasm-feature-detect": "^1.6.2",
+    "waveform-playlist": "^4.3.3",
     "webm-duration-fix": "^1.0.4",
     "wechatpay-node-v3": "^2.2.0",
     "zod": "^3.23.8"
