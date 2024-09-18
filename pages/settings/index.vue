@@ -17,6 +17,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/toast/use-toast";
 
+useSeoMeta({
+  title: "设置中心",
+});
 const { toast } = useToast();
 
 const runtimeConfig = useRuntimeConfig();

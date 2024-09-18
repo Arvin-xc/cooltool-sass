@@ -5,6 +5,11 @@ import { Icon } from "@iconify/vue";
 import Draggable from "vuedraggable";
 import { v4 as uuid } from "uuid";
 
+useSeoMeta({
+  title: "字帖生成",
+  description:
+    "免费的在线字帖生成工具，输入任意汉字后生成可生成可打印的字帖PDF。",
+});
 definePageMeta({
   name: "字帖生成",
 });

@@ -5,6 +5,10 @@ import type { RcFile } from "~/components/TablePage.vue";
 definePageMeta({
   name: "PDF压缩",
 });
+useSeoMeta({
+  title: "PDF压缩",
+  description: "免费的PDF压缩工具，可批量压缩PDF。",
+});
 const accept = "application/pdf";
 const optimizeLevel = ref<string>("2");
 const optimizeLevelOptions = [

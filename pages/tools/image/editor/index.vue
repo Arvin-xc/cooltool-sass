@@ -4,6 +4,10 @@ import { useUrlSearchParams } from "@vueuse/core";
 definePageMeta({
   name: "图片编辑器",
 });
+useSeoMeta({
+  title: "图片编辑器",
+  description: "免费且强大的图片编辑器，包含滤镜、遮罩、尺寸修改等多种功能。",
+});
 
 const PhotoEditor = defineAsyncComponent(
   () => import("./components/PhotoEditor.vue")

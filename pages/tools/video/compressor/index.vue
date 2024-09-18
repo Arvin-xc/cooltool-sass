@@ -3,6 +3,10 @@ import dayjs from "dayjs";
 import { filesize } from "filesize";
 import type { RcFile } from "~/components/TablePage.vue";
 
+useSeoMeta({
+  title: "视频压缩",
+  description: "免费批量压缩视频。",
+});
 definePageMeta({
   name: "视频压缩",
   electron: true,

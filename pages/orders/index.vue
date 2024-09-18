@@ -11,6 +11,9 @@ import dayjs from "dayjs";
 
 const { data: pricing } = useFetch("/api/pricing");
 const { data: orders } = useFetch("/api/orders");
+useSeoMeta({
+  title: "订单中心",
+});
 </script>
 
 <template>

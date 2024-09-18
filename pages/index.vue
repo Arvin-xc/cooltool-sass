@@ -41,6 +41,13 @@
 </template>
 
 <script setup lang="ts">
+useSeoMeta({
+  title: "酷兔工具(CoolTool) - 永久免费的办公小助手",
+  titleTemplate: "",
+  description:
+    "酷兔工具(CoolTool)是一款整合多种小工具的办公小助手，目标是为职场人提供一站式的多媒体文件处理平台！我们致力于为大家提供免费便捷的在线工具，以提升工作和生活中的数据处理效率和速度，从而提高整体工作效率。",
+  keywords: "酷兔工具,CoolTool,办公小助手,免费办公助手,免费工具箱",
+});
 const hotToolKeys = [
   "/video/recorder",
   "/video/converter",

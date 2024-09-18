@@ -8,9 +8,14 @@ import {
   type VideoFormat,
 } from "~/config/tools.video";
 
+useSeoMeta({
+  title: "视频格式转换",
+  description: "免费批量转换视频格式，简单高效",
+});
 definePageMeta({
   name: "视频格式转换",
   electron: true,
+  freeForever: true,
 });
 
 const accept = "video/*";

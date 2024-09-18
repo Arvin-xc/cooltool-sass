@@ -4,6 +4,9 @@ import { Icon } from "@iconify/vue";
 definePageMeta({
   layout: "blank",
 });
+useSeoMeta({
+  title: "下载中心",
+});
 const { toast } = useToast();
 
 const onDownload = (link: string) => {

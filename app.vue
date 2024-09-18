@@ -3,6 +3,9 @@ import { ConfigProvider } from "radix-vue";
 import { useVIPStore } from "~/stores/user";
 import Toaster from "@/components/ui/toast/Toaster.vue";
 
+useSeoMeta({
+  titleTemplate: "%s - 酷兔工具(CoolTool)",
+});
 const { data: subscription } = useFetch("/api/subscription");
 const useIdFunction = () => useId();
 const vipStore = useVIPStore();

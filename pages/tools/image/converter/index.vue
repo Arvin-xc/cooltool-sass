@@ -8,6 +8,10 @@ import {
   type ImageFormat,
 } from "~/config/tools.image";
 
+useSeoMeta({
+  title: "图片格式转换",
+  description: "免费的图片格式转换工具，可将图片转为任意格式的图片。",
+});
 definePageMeta({
   name: "图片格式转换",
   electron: true,

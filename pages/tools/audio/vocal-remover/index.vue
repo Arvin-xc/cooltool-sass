@@ -4,6 +4,11 @@ import dayjs from "dayjs";
 import { filesize } from "filesize";
 import type { RcFile } from "~/components/TablePage.vue";
 
+useSeoMeta({
+  title: "人声分离",
+  description:
+    "将任意音视频中的人声和背景音乐分离开来。此项能力使用了先进的AI技术，提取的人生高清纯净。",
+});
 definePageMeta({
   name: "人声分离",
   freeForever: true,

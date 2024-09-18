@@ -3,6 +3,11 @@ import { filesize } from "filesize";
 import type { RcFile } from "~/components/TablePage.vue";
 import { getFilenameFromHeader } from "~/lib/pdf";
 
+useSeoMeta({
+  title: "从PDF转换",
+  description:
+    "免费的PDF转换工具，可将PDF转为其他常见的文档格式，例如Word，Text以及PPT等",
+});
 definePageMeta({
   name: "从PDF转换",
 });

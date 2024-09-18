@@ -13,8 +13,13 @@ const Recording = defineAsyncComponent(
   () => import("./components/recording.vue")
 );
 
+useSeoMeta({
+  title: "录屏工具",
+  description: "简单易用的免费录屏工具，支持多种录制模式，高清无任何限制。",
+});
 definePageMeta({
   name: "录屏工具",
+  freeForever: true,
 });
 
 const selectedRecordingType = ref<DisplaySurfaceType>();

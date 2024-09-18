@@ -7,6 +7,10 @@ import Constants, { LANGUAGES, LANGUAGES_FOR_RENDER } from "./utils/Constants";
 definePageMeta({
   name: "音视频转文字",
 });
+useSeoMeta({
+  title: "音视频转文字",
+  description: "免费的AI提取文字工具，可将任意音视频中的语音转为文本。",
+});
 const accept = "audio/*";
 const transcriber = useTranscriber();
 const language = ref<keyof typeof LANGUAGES>("zh");
