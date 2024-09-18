@@ -1,9 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
-export default defineNuxtConfig({
-  app: {
-    head: {
-      script: [
+const googleAnalysisScripts =
+  process.env.NODE_ENV === "production"
+    ? ([
         {
           src: "/assets/libs/google-analytics.js",
         },
@@ -12,7 +11,13 @@ export default defineNuxtConfig({
           async: true,
           fetchpriority: "low",
         },
-      ],
+      ] as const)
+    : [];
+
+export default defineNuxtConfig({
+  app: {
+    head: {
+      script: [...googleAnalysisScripts],
     },
   },
   runtimeConfig: {

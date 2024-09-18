@@ -8,8 +8,8 @@ const routes = useNestedRouteTree();
     <aside
       class="inset-y-0 left-0 w-16 lg:w-40 flex-col border-r bg-background flex"
     >
-      <nav class="flex flex-col items-center px-2 py-5 border-b">
-        <NuxtLink to="/">
+      <NuxtLink to="/">
+        <nav class="flex flex-col items-center px-2 py-5 border-b">
           <div class="flex items-center gap-1">
             <div
               class="group flex h-12 w-12 shrink-0 items-center justify-center gap-2 rounded-full text-lg font-semibold text-primary-foreground"
@@ -18,9 +18,9 @@ const routes = useNestedRouteTree();
             </div>
             <span class="hidden font-bold lg:block">酷兔工具</span>
           </div>
-        </NuxtLink>
-        <div class="text-xs">永久免费的办公小助手</div>
-      </nav>
+          <div class="text-xs">永久免费的办公小助手</div>
+        </nav>
+      </NuxtLink>
       <Nav
         :links="tool.children"
         :key="tool.name"
