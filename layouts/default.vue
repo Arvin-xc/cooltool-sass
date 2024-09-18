@@ -19,7 +19,7 @@ const routes = useNestedRouteTree();
             <span class="hidden font-bold lg:block">酷兔工具</span>
           </div>
         </NuxtLink>
-        <div class="text-xs">认真生活、快乐工作</div>
+        <div class="text-xs">永久免费的办公小助手</div>
       </nav>
       <Nav
         :links="tool.children"
