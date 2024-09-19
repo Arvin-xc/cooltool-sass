@@ -36,7 +36,6 @@
     "filesize": "^10.1.4",
     "jszip": "^3.10.1",
     "lucide-vue-next": "^0.424.0",
-    "module": "link:@sentry/nuxt/module",
     "nuxt": "^3.12.4",
     "nuxt-security": "2.0.0-rc.9",
     "onnxruntime-web": "1.19.0",
