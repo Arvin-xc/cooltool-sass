@@ -100,9 +100,9 @@ defineExpose({
           </p>
           <div
             v-if="typeof percent === 'number' && percent < 100"
-            class="w-full h-10 mt-4 px-12"
+            class="w-full min-h-10 mt-4 px-12"
           >
-            <Progress :model-value="percent" />
+            <Progress class="h-2.5" :model-value="percent" />
             <div class="flex gap-2 items-center justify-center mt-2">
               <div class="text-sm text-muted-foreground leading-[24px]">
                 <p>{{ percentTip ?? "加载必要文件中！" }}</p>

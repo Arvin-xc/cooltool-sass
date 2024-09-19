@@ -82,7 +82,7 @@ declare global {
       }) => Promise<void>;
       getPathForFile: (file: File) => string;
       writeFile: (file: File) => Promise<string>;
-      getUVR5Prot: () => Promise<number>;
+      getUVR5Prot: (callback: (progress: number) => void) => Promise<number>;
     };
   }
 }

@@ -15,6 +15,7 @@ definePageMeta({
   electron: true,
 });
 const accept = "audio/*";
+const progress = ref<number>(0);
 const headers = [
   {
     class: "w-[20%]",
@@ -76,7 +77,12 @@ watch(data, () => {
   }
 });
 onMounted(async () => {
-  port.value = await window.electronAPI?.getUVR5Prot();
+  port.value = await window.electronAPI?.getUVR5Prot((value) => {
+    progress.value = value;
+    console.log('value', value)
+  });
+  progress.value = 100;
+  console.log("获取UVR5端口", port.value);
 });
 </script>
 <template>
@@ -84,6 +90,7 @@ onMounted(async () => {
     :concurrency="1"
     :headers="headers"
     :multiple="false"
+    :percent="progress"
     :accept="accept"
     :title="$route.name?.toString()!"
     :convert-fn="convertFn"
