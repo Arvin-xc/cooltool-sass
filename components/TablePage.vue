@@ -10,7 +10,6 @@ import pLimit from "p-limit";
 import type { ProgressVariants } from "~/components/ui/progress";
 import { downloadFiles } from "~/lib/file";
 import { useToast } from "./ui/toast";
-import type { string } from "zod";
 
 const { accept, convertFn, percent, concurrency } = defineProps<{
   accept: string;
@@ -207,6 +206,7 @@ const onSaveAll = async () => {
       :hidden="tableList.length"
     >
       <slot />
+      <div class="h-2"></div>
       <OurDirSetting
         v-if="$route.meta.electron"
         :output-dir="outputDir"

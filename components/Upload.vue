@@ -122,7 +122,7 @@ defineExpose({
           >
             {{ label || "添加文件" }}
           </Button>
-          <div class="mt-4">
+          <div class="mt-6">
             <slot />
           </div>
         </div>

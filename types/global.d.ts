@@ -48,9 +48,16 @@ declare global {
     __electron_preload__getFileInfo?: (
       url: string
     ) => Promise<{ size: number }>;
-    __electron_preload_getDesktopByType?: (
+    __electron_preload__getDesktopByType?: (
       type: "window" | "screen"
     ) => Promise<DesktopCapturerSource[]>;
+    __electron_preload__getModelPathByName?: (
+      name: string
+    ) => Promise<string | undefined>;
+    __electron_preload__downloadModelByName?: (
+      name: string,
+      callback: (progress: number) => void
+    ) => Promise<string>;
     electronAPI?: {
       selectFolder: () => Promise<string | null>;
       openFile: (filePath: string) => Promise<void>;

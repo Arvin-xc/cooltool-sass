@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { useEventSource } from "@vueuse/core";
 import dayjs from "dayjs";
-import { filesize } from "filesize";
 import type { RcFile } from "~/components/TablePage.vue";
+import { useToast } from "~/components/ui/toast";
 
 useSeoMeta({
   title: "人声分离",
@@ -15,7 +15,8 @@ definePageMeta({
   electron: true,
 });
 const accept = "audio/*";
-const progress = ref<number>(0);
+const { toast } = useToast();
+const progress = ref<number>();
 const headers = [
   {
     class: "w-[20%]",
@@ -37,13 +38,28 @@ const port = ref<number>();
 const filepath = ref<string>();
 const targetFile = ref<RcFile>();
 const outputDir = ref<string>();
+const modelList = [
+  {
+    id: "UVR-MDX-NET-Inst_Main.onnx",
+    name: "MDX-NET-Inst_Main",
+  },
+];
+const selectedModel = computed(() =>
+  modelList.find((model) => model.id === selectedModelId.value)
+);
+
+const selectedModelId = ref<string>(modelList[0].id);
+
+const modelPath = ref<string>();
 const eventSourceURI = computed(
   () =>
     `http://localhost:${
       port.value
     }/vocal-remover?file_path=${encodeURIComponent(
       filepath.value || ""
-    )}&output_dir=${encodeURIComponent(outputDir.value || "")}`
+    )}&output_dir=${encodeURIComponent(
+      outputDir.value || ""
+    )}&model_path=${encodeURIComponent(modelPath.value || "")}`
 );
 const { data, open, status, close } = useEventSource(
   eventSourceURI,
@@ -62,12 +78,39 @@ const convertFn = async (file: RcFile, output: string) => {
   );
   file.duration = meta.duration;
   open();
-  file.response = `${outputDir.value}/hdemucs_mmi/${file.file.name.replace(
+  file.response = `${outputDir.value}/${file.file.name.replace(
     /\.\w+$/,
-    ""
+    "_背景.wav"
   )}`;
   return file;
 };
+const downloadModelIfNeed = async (modelId: string) => {
+  const filepath = await window.__electron_preload__getModelPathByName?.(
+    modelId
+  );
+  if (filepath) {
+    modelPath.value = filepath;
+  } else {
+    try {
+      modelPath.value = await window.__electron_preload__downloadModelByName?.(
+        modelId,
+        (value: number) => {
+          progress.value = value;
+        }
+      );
+      toast({
+        title: "下载成功！",
+      });
+    } catch (e: any) {
+      toast({
+        title: "下载模型失败！",
+        description: e.message,
+      });
+      console.error(e); // console.error会自动上报到sentry
+    }
+  }
+};
+
 watch(data, () => {
   if (Number(data.value) === 100) {
     close();
@@ -76,12 +119,14 @@ watch(data, () => {
     targetFile.value.percent = Number(data.value);
   }
 });
+
 onMounted(async () => {
   port.value = await window.electronAPI?.getUVR5Prot((value) => {
     progress.value = value;
-    console.log('value', value)
+    console.log("value", value);
   });
   progress.value = 100;
+  downloadModelIfNeed(selectedModelId.value);
   console.log("获取UVR5端口", port.value);
 });
 </script>
@@ -107,6 +152,9 @@ onMounted(async () => {
           ? dayjs.duration(data.duration, "seconds").format("HH:mm:ss")
           : "--:--:--"
       }}
+    </template>
+    <template #default>
+      <p class="text-xs text-gray-400">分离模型：{{ selectedModel?.name }}</p>
     </template>
     <template #percent="{ data }">
       <Progress
