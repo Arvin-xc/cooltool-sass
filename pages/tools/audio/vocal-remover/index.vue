@@ -41,14 +41,35 @@ const outputDir = ref<string>();
 const modelList = [
   {
     id: "UVR-MDX-NET-Inst_Main.onnx",
+    dim_f: 2048,
     name: "MDX-NET-Inst_Main",
+  },
+  {
+    id: "UVR-MDX-NET-Inst_HQ_4.onnx",
+    dim_f: 2560,
+    name: "MDX-NET-Inst_HQ_4",
+  },
+  {
+    id: "UVR-MDX-NET-Inst_HQ_3.onnx",
+    dim_f: 3072,
+    name: "MDX-NET-Inst_HQ_3",
+  },
+  {
+    id: "UVR-MDX-NET_Crowd_HQ_1.onnx",
+    dim_f: 2560,
+    name: "MDX-NET_Crowd_HQ_1",
+  },
+  {
+    id: "UVR_MDXNET_KARA_2.onnx",
+    dim_f: 2048,
+    name: "UVR_MDXNET_KARA_2.onnx",
   },
 ];
 const selectedModel = computed(() =>
   modelList.find((model) => model.id === selectedModelId.value)
 );
 
-const selectedModelId = ref<string>(modelList[0].id);
+const selectedModelId = ref<string>(modelList[2].id);
 
 const modelPath = ref<string>();
 const eventSourceURI = computed(
@@ -59,7 +80,9 @@ const eventSourceURI = computed(
       filepath.value || ""
     )}&output_dir=${encodeURIComponent(
       outputDir.value || ""
-    )}&model_path=${encodeURIComponent(modelPath.value || "")}`
+    )}&model_path=${encodeURIComponent(modelPath.value || "")}&dim_f=${
+      selectedModel.value?.dim_f
+    }`
 );
 const { data, open, status, close } = useEventSource(
   eventSourceURI,
@@ -98,9 +121,11 @@ const downloadModelIfNeed = async (modelId: string) => {
           progress.value = value;
         }
       );
-      toast({
-        title: "下载成功！",
-      });
+      if (modelPath.value) {
+        toast({
+          title: "下载成功！",
+        });
+      }
     } catch (e: any) {
       toast({
         title: "下载模型失败！",
