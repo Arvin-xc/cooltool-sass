@@ -8,6 +8,7 @@ useSeoMeta({
   description: "免费的在线文档转为PDF工具，可将常见的Word，PPT等文档转为PDF。",
 });
 definePageMeta({
+  icon: "carbon:pdf-reference",
   name: "转为PDF",
 });
 const accept = "*/*";

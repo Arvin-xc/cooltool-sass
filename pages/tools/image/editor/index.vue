@@ -2,6 +2,7 @@
 import { useUrlSearchParams } from "@vueuse/core";
 
 definePageMeta({
+  icon: "tabler:photo-edit",
   name: "图片编辑器",
 });
 useSeoMeta({

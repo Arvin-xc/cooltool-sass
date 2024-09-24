@@ -15,6 +15,7 @@ useSeoMeta({
 definePageMeta({
   name: "图片格式转换",
   electron: true,
+  icon: 'mdi:image-move'
 });
 
 const accept = "image/*";

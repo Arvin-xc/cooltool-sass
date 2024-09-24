@@ -7,9 +7,18 @@
         </CardHeader>
         <CardContent class="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <NuxtLink :to="tool.path" v-for="tool in item.tools">
-            <Card class="hover:border-primary active:bg-secondary">
+            <Card
+              class="hover:border-primary hover:text-primary active:bg-secondary"
+            >
               <CardHeader>
-                <h4 class="font-bold text-sm">{{ tool.name }}</h4>
+                <div class="flex justify-between flex-wrap gap-4 items-center">
+                  <h4 class="font-bold text-sm">{{ tool.name }}</h4>
+                  <Icon
+                    v-if="tool.icon"
+                    :icon="tool.icon"
+                    class="mr-2 size-8"
+                  />
+                </div>
               </CardHeader>
               <CardContent> </CardContent>
             </Card>
@@ -28,7 +37,10 @@
         <NuxtLink v-for="tool in tools" :to="tool.path">
           <Card class="hover:border-primary active:bg-secondary">
             <CardHeader>
-              <h4 class="font-bold text-sm">{{ tool.name }}</h4>
+              <div class="flex justify-between flex-wrap gap-4 items-center">
+                <h4 class="font-bold text-sm">{{ tool.name }}</h4>
+                <Icon v-if="tool.icon" :icon="tool.icon" class="mr-2 size-8" />
+              </div>
             </CardHeader>
             <CardContent>
               {{ tool.description }}
@@ -41,6 +53,7 @@
 </template>
 
 <script setup lang="ts">
+import { Icon } from "@iconify/vue";
 useSeoMeta({
   title: "酷兔工具(CoolTool) - 永久免费的办公小助手",
   titleTemplate: "",

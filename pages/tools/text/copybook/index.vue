@@ -11,6 +11,7 @@ useSeoMeta({
     "免费的在线字帖生成工具，输入任意汉字后生成可生成可打印的字帖PDF。",
 });
 definePageMeta({
+  icon: "mdi:ideogram-chinese-japanese-korean-variant",
   name: "字帖生成",
 });
 

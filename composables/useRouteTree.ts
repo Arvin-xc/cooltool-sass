@@ -4,6 +4,7 @@ import { computed, type ComputedRef } from "vue";
 export interface RouteNode {
   name: string;
   path: string;
+  icon?: string;
   description?: string;
   children: RouteNode[];
 }
@@ -26,6 +27,7 @@ export function useNestedRouteTree(): ComputedRef<RouteNode[]> {
           existingNode = {
             path: fullPath,
             name: index === segments.length - 1 ? (route.name as string) : "",
+            icon: route.meta?.icon as string,
             description:
               index === segments.length - 1
                 ? (route.meta?.description as string)
@@ -37,6 +39,7 @@ export function useNestedRouteTree(): ComputedRef<RouteNode[]> {
 
         if (index === segments.length - 1) {
           existingNode.name = route.name as string;
+          existingNode.icon = route.meta?.icon as string;
         } else {
           currentLevel = existingNode.children;
         }
@@ -48,6 +51,7 @@ export function useNestedRouteTree(): ComputedRef<RouteNode[]> {
 
   const routeTree = computed(() => {
     const routes = router.getRoutes();
+    console.log("routes", routes);
     return buildRouteTree(routes);
   });
 

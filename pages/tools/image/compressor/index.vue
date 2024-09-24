@@ -7,6 +7,7 @@ useSeoMeta({
 });
 definePageMeta({
   name: "图片压缩",
+  icon: "hugeicons:image-composition",
 });
 </script>
 

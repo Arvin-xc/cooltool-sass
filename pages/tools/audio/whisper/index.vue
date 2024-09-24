@@ -6,6 +6,7 @@ import Constants, { LANGUAGES, LANGUAGES_FOR_RENDER } from "./utils/Constants";
 
 definePageMeta({
   name: "音视频转文字",
+  icon: "mdi:text-to-speech",
 });
 useSeoMeta({
   title: "音视频转文字",

@@ -12,6 +12,7 @@ useSeoMeta({
 definePageMeta({
   name: "人声分离",
   freeForever: true,
+  icon: "mingcute:voice-fill",
   electron: true,
 });
 const accept = "audio/*";

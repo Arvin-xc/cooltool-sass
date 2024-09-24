@@ -73,7 +73,7 @@ const route = useRoute();
                   )
                 "
               >
-                <Icon :icon="link.name" class="mr-2 size-4" />
+                <Icon v-if="link.icon" :icon="link.icon" class="mr-2 size-5" />
                 {{ link.name }}
               </NuxtLink>
             </template>

@@ -12,10 +12,12 @@ type TransactionData = {
 const ONNX_MODEL_NAME = "RMBG_1.4";
 useSeoMeta({
   title: "在线抠图",
-  description: "免费的在线抠图工具，可将任意图片去除背景，保留主要元素（如人像、物品、动物等）",
+  description:
+    "免费的在线抠图工具，可将任意图片去除背景，保留主要元素（如人像、物品、动物等）",
 });
 definePageMeta({
   name: "在线抠图",
+  icon: "tabler:stack-filled",
   client: true,
 });
 

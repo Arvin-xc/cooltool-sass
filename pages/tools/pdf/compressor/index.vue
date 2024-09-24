@@ -4,6 +4,7 @@ import type { RcFile } from "~/components/TablePage.vue";
 
 definePageMeta({
   name: "PDF压缩",
+  icon: "bxs:file-pdf",
 });
 useSeoMeta({
   title: "PDF压缩",

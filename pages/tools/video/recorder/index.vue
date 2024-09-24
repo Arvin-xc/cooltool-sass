@@ -19,6 +19,7 @@ useSeoMeta({
 });
 definePageMeta({
   name: "录屏工具",
+  icon: "carbon:recording-filled",
   freeForever: true,
 });
 

@@ -9,6 +9,7 @@ useSeoMeta({
     "免费的PDF转换工具，可将PDF转为其他常见的文档格式，例如Word，Text以及PPT等",
 });
 definePageMeta({
+  icon: "carbon:document-word-processor-reference",
   name: "从PDF转换",
 });
 const accept = "application/pdf";

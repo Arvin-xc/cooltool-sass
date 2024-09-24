@@ -15,6 +15,7 @@ useSeoMeta({
 definePageMeta({
   name: "视频格式转换",
   electron: true,
+  icon: "solar:video-frame-replace-outline",
   freeForever: true,
 });
 

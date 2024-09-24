@@ -7,6 +7,7 @@ useSeoMeta({
 });
 definePageMeta({
   name: "思维导图",
+  icon: "icon-park-outline:mind-mapping",
 });
 
 const MindMapping = defineAsyncComponent(

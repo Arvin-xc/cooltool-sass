@@ -9,6 +9,7 @@ useSeoMeta({
 });
 definePageMeta({
   name: "视频压缩",
+  icon: "icon-park-outline:video-two",
   electron: true,
 });
 
