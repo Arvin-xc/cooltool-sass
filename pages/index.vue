@@ -8,7 +8,7 @@
         <CardContent class="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <NuxtLink :to="tool.path" v-for="tool in item.tools">
             <Card
-              class="hover:border-primary hover:text-primary active:bg-secondary"
+              class="hover:border-primary hover:text-primary hover:bg-primary/10 active:bg-primary/20"
             >
               <CardHeader>
                 <div class="flex justify-between flex-wrap gap-4 items-center">
@@ -35,7 +35,9 @@
         class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 grid-cols-1"
       >
         <NuxtLink v-for="tool in tools" :to="tool.path">
-          <Card class="hover:border-primary active:bg-secondary">
+          <Card
+            class="hover:border-primary hover:text-primary hover:bg-primary/10 active:bg-primary/20"
+          >
             <CardHeader>
               <div class="flex justify-between flex-wrap gap-4 items-center">
                 <h4 class="font-bold text-sm">{{ tool.name }}</h4>
