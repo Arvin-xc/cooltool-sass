@@ -65,7 +65,6 @@ const onSelectFiles = (files: File[]) => {
     }
 
     if (limit.value) {
-      console.log("limit.value", limit.value);
       limit.value(() => convertFn(newFile, outputDir.value));
     } else {
       convertFn(newFile, outputDir.value);
