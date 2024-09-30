@@ -1,7 +1,13 @@
 <script setup lang="ts">
 import { useDropZone, useEventListener } from "@vueuse/core";
 
-const { subtitle, label, accept, percent } = defineProps<{
+const {
+  subtitle,
+  label,
+  accept = "*",
+  percent,
+  multiple,
+} = defineProps<{
   subtitle: string;
   multiple?: boolean;
   percent?: number;
@@ -25,14 +31,8 @@ const onchange = (e: Event) => {
   }
 };
 
-function onDrop(files: File[] | null) {
-  const acceptFiles = filterAcceptFiles(files || []);
-  if (acceptFiles) {
-    emit("change", acceptFiles);
-  }
-}
 const filterAcceptFiles = (files: File[]) => {
-  if (computedAccept.value === "*") {
+  if (accept === "*") {
     return files;
   }
   const [mainType, subType] = accept?.split("/") || [];
@@ -43,23 +43,13 @@ const filterAcceptFiles = (files: File[]) => {
   }
 };
 
-const computedAccept = computed(() => accept || "*");
-
 const { isOverDropZone } = useDropZone(dropZoneRef, {
-  onDrop,
-  dataTypes(types) {
-    const [mainType, subType] = accept?.split("/") || [];
-
-    if (computedAccept.value === "*") {
-      return true;
-    }
-
-    if (subType === "*") {
-      return types.some((type) => type.split("/")[0] === mainType);
-    } else {
-      return types.includes(computedAccept.value);
-    }
+  onDrop(files) {
+    emit("change", files);
   },
+  multiple,
+  preventDefaultForUnhandled: true,
+  dataTypes: accept.split(","),
 });
 
 onMounted(() => {
@@ -83,7 +73,7 @@ defineExpose({
 
 <template>
   <div class="h-full">
-    <div class="flex flex-1 w-full flex-col gap-4 p-4 lg:gap-6 lg:p-6 h-full">
+    <div class="flex flex-1 w-full flex-col gap-4 lg:gap-6 h-full">
       <div
         ref="dropZoneRef"
         :class="[
