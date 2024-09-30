@@ -56,7 +56,7 @@ onMounted(() => {
 const showCopyBook = computed(() => characters.value.length >= 1);
 </script>
 <template>
-  <div class="p-6 h-full font-bold bg-white">
+  <div class="p-6 h-full font-bold">
     <h2 class="font-bold">{{ $route.name }}</h2>
     <div v-if="showCopyBook" class="mt-6">
       <ClientOnly>

@@ -16,7 +16,7 @@ const MindMapping = defineAsyncComponent(
 </script>
 
 <template>
-  <div class="p-6 h-full font-bold bg-white">
+  <div class="p-6 h-full font-bold ">
     <h2 class="font-bold">{{ $route.name }}</h2>
 
     <div class="flex flex-col justify-center items-center h-full gap-6">

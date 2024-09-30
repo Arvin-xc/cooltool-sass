@@ -35,8 +35,8 @@ const routes = useNestedRouteTree();
     <div class="flex flex-col flex-1">
       <Header />
       <ElectronWrapper>
-        <main class="grid flex-1 items-start gap-4 p-6 h-full">
-          <div class="h-full rounded border rounded overflow-hidden">
+        <main class="grid flex-1 items-start gap-4 h-full">
+          <div class="h-full p-6">
             <slot />
           </div>
         </main>

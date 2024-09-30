@@ -12,13 +12,8 @@ globalStore.updateRuntime(isElectron.value ? "electron" : "web");
 </script>
 <template>
   <div class="h-full" v-if="!isElectron && page?.meta.electron">
-    <div class="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 h-full bg-white">
-      <div
-        ref="dropZoneRef"
-        :class="[
-          'flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm',
-        ]"
-      >
+    <div class="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 h-full">
+      <div :class="['flex flex-1 items-center justify-center rounded-lg ']">
         <div class="flex flex-col items-center gap-1 text-center">
           <h3 class="text-2xl font-bold tracking-tight">{{ page?.name }}</h3>
           <p class="text-sm text-muted-foreground">
