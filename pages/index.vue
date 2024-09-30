@@ -5,7 +5,7 @@
         <CardHeader>
           <h2 class="font-bold text-lg">{{ item.label }}</h2>
         </CardHeader>
-        <CardContent class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <CardContent class="grid grid-cols-1 xl:grid-cols-2 gap-4">
           <NuxtLink :to="tool.path" v-for="tool in item.tools">
             <Card
               class="hover:border-primary hover:text-primary hover:bg-primary/10 active:bg-primary/20"
@@ -32,7 +32,7 @@
         <h2 class="font-bold text-lg">全部工具：</h2>
       </CardHeader>
       <CardContent
-        class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 grid-cols-1"
+        class="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 grid-cols-1"
       >
         <NuxtLink v-for="tool in tools" :to="tool.path">
           <Card
