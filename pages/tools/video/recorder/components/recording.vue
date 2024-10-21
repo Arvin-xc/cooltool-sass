@@ -39,6 +39,7 @@ const mainRecorderManager = ref<MediaRecorderManager>(
   new MediaRecorderManager({
     displaySurface: recordingType.value,
     recordResultType: "video",
+    includeScreenAudio: true,
     onStopRecording: (manager) => {
       emits("updateRecordingState", false);
       if (manager.output?.video) {
